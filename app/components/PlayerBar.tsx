@@ -1,6 +1,7 @@
 'use client';
 
 import { usePlayer } from '../context/PlayerContext';
+import { useFavorites } from '../context/FavoritesContext';
 import Image from 'next/image';
 
 // Icons
@@ -73,6 +74,9 @@ export default function PlayerBar() {
         setVolume,
         toggleMute,
     } = usePlayer();
+
+    const { isFavorite, toggleFavorite } = useFavorites();
+    const isStationFavorite = currentStation ? isFavorite(currentStation.stationuuid) : false;
 
     if (!currentStation) {
         return (
@@ -161,8 +165,11 @@ export default function PlayerBar() {
                     <h4>{currentStation.name}</h4>
                     <p>{currentStation.country} • {currentStation.tags?.split(',')[0] || 'Radio'}</p>
                 </div>
-                <button className="player-favorite">
-                    <HeartIcon />
+                <button
+                    className={`player-favorite ${isStationFavorite ? 'active' : ''}`}
+                    onClick={() => toggleFavorite(currentStation)}
+                >
+                    <HeartIcon filled={isStationFavorite} />
                 </button>
             </div>
 

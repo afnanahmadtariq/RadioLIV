@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { PlayerProvider } from "./context/PlayerContext";
+import { FavoritesProvider } from "./context/FavoritesContext";
 import { Sidebar, TopBar, PlayerBar } from "./components";
 
 const inter = Inter({
@@ -29,14 +30,16 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} antialiased`}>
         <PlayerProvider>
-          <div className="app-container">
-            <Sidebar />
-            <main className="main-content">
-              <TopBar />
-              {children}
-            </main>
-            <PlayerBar />
-          </div>
+          <FavoritesProvider>
+            <div className="app-container">
+              <Sidebar />
+              <main className="main-content">
+                <TopBar />
+                {children}
+              </main>
+              <PlayerBar />
+            </div>
+          </FavoritesProvider>
         </PlayerProvider>
       </body>
     </html>

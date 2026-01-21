@@ -112,7 +112,7 @@ export default function Sidebar() {
                 </nav>
             </div>
 
-            {/* Settings */}
+            {/* Settings & Footer */}
             <div className="sidebar-section" style={{ marginTop: 'auto' }}>
                 <nav className="sidebar-nav">
                     <Link
@@ -123,6 +123,39 @@ export default function Sidebar() {
                         Settings
                     </Link>
                 </nav>
+
+                {/* Legal Links */}
+                <div style={{
+                    padding: '16px 12px',
+                    marginTop: '16px',
+                    borderTop: '1px solid var(--border-color)'
+                }}>
+                    <div style={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        gap: '12px',
+                        fontSize: '11px',
+                        color: 'var(--text-muted)',
+                    }}>
+                        <Link href="/terms" style={{ color: 'inherit', textDecoration: 'none' }}>
+                            Terms
+                        </Link>
+                        <Link href="/privacy" style={{ color: 'inherit', textDecoration: 'none' }}>
+                            Privacy
+                        </Link>
+                        <Link href="/dmca" style={{ color: 'inherit', textDecoration: 'none' }}>
+                            DMCA
+                        </Link>
+                    </div>
+                    <p style={{
+                        fontSize: '10px',
+                        color: 'var(--text-muted)',
+                        marginTop: '8px',
+                        opacity: 0.7
+                    }}>
+                        © 2026 RadioLIV
+                    </p>
+                </div>
             </div>
         </aside>
     );

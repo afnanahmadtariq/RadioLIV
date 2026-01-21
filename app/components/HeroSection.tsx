@@ -1,5 +1,7 @@
 'use client';
 
+import { usePlayer } from '../context/PlayerContext';
+import { useFavorites } from '../context/FavoritesContext';
 import SafeImage from './SafeImage';
 import type { RadioStation } from '../types';
 
@@ -8,6 +10,12 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({ station }: HeroSectionProps) {
+    const { playStation, currentStation, isPlaying, isLoading } = usePlayer();
+    const { isFavorite, toggleFavorite } = useFavorites();
+
+    const isCurrentStation = currentStation?.stationuuid === station.stationuuid;
+    const isStationFavorite = isFavorite(station.stationuuid);
+
     return (
         <section className="hero-section">
             <div className="hero-content">
@@ -20,17 +28,37 @@ export default function HeroSection({ station }: HeroSectionProps) {
                     {station.country} • {station.tags?.split(',').slice(0, 2).join(', ') || 'Radio'} • {station.bitrate || '128'} kbps
                 </p>
                 <div className="hero-actions">
-                    <a href={`/station/${station.stationuuid}`} className="btn btn-primary">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M8 5v14l11-7z" />
-                        </svg>
-                        Listen Now
-                    </a>
-                    <button className="btn btn-secondary">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <button
+                        className="btn btn-primary"
+                        onClick={() => playStation(station)}
+                        disabled={isLoading && isCurrentStation}
+                    >
+                        {isLoading && isCurrentStation ? (
+                            <>⏳ Loading...</>
+                        ) : isCurrentStation && isPlaying ? (
+                            <>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                                </svg>
+                                Now Playing
+                            </>
+                        ) : (
+                            <>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M8 5v14l11-7z" />
+                                </svg>
+                                Listen Now
+                            </>
+                        )}
+                    </button>
+                    <button
+                        className={`btn ${isStationFavorite ? 'btn-primary' : 'btn-secondary'}`}
+                        onClick={() => toggleFavorite(station)}
+                    >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill={isStationFavorite ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2">
                             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                         </svg>
-                        Add to Favorites
+                        {isStationFavorite ? 'Favorited' : 'Add to Favorites'}
                     </button>
                 </div>
             </div>

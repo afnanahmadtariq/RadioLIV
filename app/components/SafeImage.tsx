@@ -24,13 +24,16 @@ export default function SafeImage({
 }: SafeImageProps) {
     const [hasError, setHasError] = useState(false);
 
-    if (hasError || !src) {
+    // Trim the URL to avoid issues with trailing spaces
+    const cleanSrc = src?.trim() || '';
+
+    if (hasError || !cleanSrc) {
         return fallback ? <>{fallback}</> : null;
     }
 
     return (
         <Image
-            src={src}
+            src={cleanSrc}
             alt={alt}
             width={width}
             height={height}

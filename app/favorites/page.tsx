@@ -1,33 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useFavorites } from '../context/FavoritesContext';
 import { StationCard } from '../components';
-import type { RadioStation } from '../types';
 
 export default function FavoritesPage() {
-    const [favorites, setFavorites] = useState<RadioStation[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-        const stored = localStorage.getItem('favorites');
-        if (stored) {
-            setFavorites(JSON.parse(stored));
-        }
-        setIsLoading(false);
-    }, []);
-
-    if (isLoading) {
-        return (
-            <div className="animate-fade-in" style={{ paddingBottom: '40px' }}>
-                <section className="hero-section" style={{ paddingBottom: '24px' }}>
-                    <div className="hero-content" style={{ maxWidth: '100%' }}>
-                        <h1 className="hero-title">❤️ Your Favorites</h1>
-                        <p className="hero-subtitle">Loading your favorite stations...</p>
-                    </div>
-                </section>
-            </div>
-        );
-    }
+    const { favorites } = useFavorites();
 
     return (
         <div className="animate-fade-in" style={{ paddingBottom: '40px' }}>
