@@ -1,25 +1,10 @@
 import { getStationsByCountry, getCountries } from '../../lib/api';
 import { StationCard } from '../../components';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface PageProps {
     params: Promise<{ code: string }>;
-}
-
-// Country flag emoji mapping
-const countryFlags: Record<string, string> = {
-    US: '🇺🇸', GB: '🇬🇧', DE: '🇩🇪', FR: '🇫🇷', ES: '🇪🇸', IT: '🇮🇹',
-    BR: '🇧🇷', MX: '🇲🇽', CA: '🇨🇦', AU: '🇦🇺', JP: '🇯🇵', KR: '🇰🇷',
-    CN: '🇨🇳', IN: '🇮🇳', RU: '🇷🇺', NL: '🇳🇱', BE: '🇧🇪', AT: '🇦🇹',
-    CH: '🇨🇭', PL: '🇵🇱', SE: '🇸🇪', NO: '🇳🇴', DK: '🇩🇰', FI: '🇫🇮',
-    PT: '🇵🇹', GR: '🇬🇷', TR: '🇹🇷', AR: '🇦🇷', CL: '🇨🇱', CO: '🇨🇴',
-    ZA: '🇿🇦', EG: '🇪🇬', NG: '🇳🇬', KE: '🇰🇪', PH: '🇵🇭', TH: '🇹🇭',
-    ID: '🇮🇩', MY: '🇲🇾', SG: '🇸🇬', NZ: '🇳🇿', IE: '🇮🇪', CZ: '🇨🇿',
-    HU: '🇭🇺', RO: '🇷🇴', UA: '🇺🇦', PK: '🇵🇰', BD: '🇧🇩', VN: '🇻🇳',
-};
-
-function getFlag(countryCode: string): string {
-    return countryFlags[countryCode] || '🌍';
 }
 
 export async function generateMetadata({ params }: PageProps) {
@@ -45,6 +30,7 @@ export default async function CountryPage({ params }: PageProps) {
 
     const country = countries.find(c => c.iso_3166_1 === countryCode);
     const countryName = country?.name || countryCode;
+    const flagUrl = `https://flagcdn.com/w80/${countryCode.toLowerCase()}.png`;
 
     return (
         <div className="animate-fade-in" style={{ paddingBottom: '40px' }}>
@@ -71,10 +57,30 @@ export default async function CountryPage({ params }: PageProps) {
                         </svg>
                         Back to Countries
                     </Link>
-                    <h1 className="hero-title">
-                        {getFlag(countryCode)} {countryName}
-                    </h1>
-                    <p className="hero-subtitle">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                        <div style={{
+                            width: '60px',
+                            height: '40px',
+                            position: 'relative',
+                            borderRadius: '4px',
+                            overflow: 'hidden',
+                            boxShadow: '0 4px 6px rgba(0,0,0,0.3)',
+                            flexShrink: 0
+                        }}>
+                            <Image
+                                src={flagUrl}
+                                alt={`${countryName} flag`}
+                                fill
+                                sizes="60px"
+                                style={{ objectFit: 'cover' }}
+                                unoptimized
+                            />
+                        </div>
+                        <h1 className="hero-title" style={{ margin: 0 }}>
+                            {countryName}
+                        </h1>
+                    </div>
+                    <p className="hero-subtitle" style={{ marginTop: '12px' }}>
                         {stations.length} stations available
                     </p>
                 </div>

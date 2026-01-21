@@ -7,28 +7,12 @@ export const metadata: Metadata = {
     description: 'Discover radio stations from every country in the world. Listen to international radio on RadioLIV.',
 };
 
-// Country flag emoji mapping (common countries)
-const countryFlags: Record<string, string> = {
-    US: '🇺🇸', GB: '🇬🇧', DE: '🇩🇪', FR: '🇫🇷', ES: '🇪🇸', IT: '🇮🇹',
-    BR: '🇧🇷', MX: '🇲🇽', CA: '🇨🇦', AU: '🇦🇺', JP: '🇯🇵', KR: '🇰🇷',
-    CN: '🇨🇳', IN: '🇮🇳', RU: '🇷🇺', NL: '🇳🇱', BE: '🇧🇪', AT: '🇦🇹',
-    CH: '🇨🇭', PL: '🇵🇱', SE: '🇸🇪', NO: '🇳🇴', DK: '🇩🇰', FI: '🇫🇮',
-    PT: '🇵🇹', GR: '🇬🇷', TR: '🇹🇷', AR: '🇦🇷', CL: '🇨🇱', CO: '🇨🇴',
-    ZA: '🇿🇦', EG: '🇪🇬', NG: '🇳🇬', KE: '🇰🇪', PH: '🇵🇭', TH: '🇹🇭',
-    ID: '🇮🇩', MY: '🇲🇾', SG: '🇸🇬', NZ: '🇳🇿', IE: '🇮🇪', CZ: '🇨🇿',
-    HU: '🇭🇺', RO: '🇷🇴', UA: '🇺🇦', PK: '🇵🇰', BD: '🇧🇩', VN: '🇻🇳',
-};
-
-function getFlag(countryCode: string): string {
-    return countryFlags[countryCode] || '🌍';
-}
-
 export default async function CountriesPage() {
     const countries = await getCountries();
 
     // Filter out countries with no stations and sort by station count
     const filteredCountries = countries
-        .filter(c => c.stationcount > 0)
+        .filter(c => c.stationcount > 0 && c.iso_3166_1)
         .sort((a, b) => b.stationcount - a.stationcount);
 
     return (
@@ -56,7 +40,6 @@ export default async function CountriesPage() {
                             code={country.iso_3166_1}
                             name={country.name}
                             stationCount={country.stationcount}
-                            flag={getFlag(country.iso_3166_1)}
                         />
                     ))}
                 </div>

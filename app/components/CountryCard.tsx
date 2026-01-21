@@ -1,15 +1,18 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface CountryCardProps {
     code: string;
     name: string;
     stationCount: number;
-    flag: string;
 }
 
-export default function CountryCard({ code, name, stationCount, flag }: CountryCardProps) {
+export default function CountryCard({ code, name, stationCount }: CountryCardProps) {
+    // Use flagcdn.com for reliable flag rendering on all OSs (especially Windows)
+    const flagUrl = `https://flagcdn.com/w80/${code.toLowerCase()}.png`;
+
     return (
         <Link
             href={`/country/${code}`}
@@ -34,7 +37,24 @@ export default function CountryCard({ code, name, stationCount, flag }: CountryC
                 e.currentTarget.style.transform = 'translateY(0)';
             }}
         >
-            <span style={{ fontSize: '32px' }}>{flag}</span>
+            <div style={{
+                width: '40px',
+                height: '30px',
+                position: 'relative',
+                flexShrink: 0,
+                borderRadius: '4px',
+                overflow: 'hidden',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+            }}>
+                <Image
+                    src={flagUrl}
+                    alt={`${name} flag`}
+                    fill
+                    sizes="40px"
+                    style={{ objectFit: 'cover' }}
+                    unoptimized // flagcdn handles optimization
+                />
+            </div>
             <div style={{ flex: 1 }}>
                 <h3 style={{ margin: 0, fontSize: '15px', fontWeight: 600 }}>
                     {name}
