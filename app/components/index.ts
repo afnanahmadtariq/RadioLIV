@@ -7,3 +7,4 @@ export { default as SafeImage } from './SafeImage';
 export { default as GenreTag } from './GenreTag';
 export { default as HeroSection } from './HeroSection';
 export { default as CountryCard } from './CountryCard';
+export { default as PwaRegistrar } from './PwaRegistrar';

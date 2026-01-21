@@ -1,19 +1,32 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { PlayerProvider } from "./context/PlayerContext";
 import { FavoritesProvider } from "./context/FavoritesContext";
-import { Sidebar, TopBar, PlayerBar } from "./components";
+import { Sidebar, TopBar, PlayerBar, PwaRegistrar } from "./components";
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
 });
 
+export const viewport: Viewport = {
+  themeColor: "#1a1b26",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+};
+
 export const metadata: Metadata = {
   title: "RadioLIV - Free Online Radio Stations",
   description: "Listen to thousands of free online radio stations from around the world. Discover music, news, sports, and more on RadioLIV.",
   keywords: ["radio", "online radio", "free radio", "music", "streaming", "internet radio"],
+  manifest: "/manifest.webmanifest", // Link to the generated manifest
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "RadioLIV",
+  },
   openGraph: {
     title: "RadioLIV - Free Online Radio Stations",
     description: "Listen to thousands of free online radio stations from around the world.",
@@ -39,6 +52,7 @@ export default function RootLayout({
               </main>
               <PlayerBar />
             </div>
+            <PwaRegistrar />
           </FavoritesProvider>
         </PlayerProvider>
       </body>
