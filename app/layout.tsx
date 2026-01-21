@@ -31,7 +31,7 @@ export default function RootLayout({
         <PlayerProvider>
           <div className="app-container">
             <Sidebar />
-            <main className="main-content" style={{ marginLeft: 'var(--sidebar-width)' }}>
+            <main className="main-content">
               <TopBar />
               {children}
             </main>

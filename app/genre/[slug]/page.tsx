@@ -1,5 +1,5 @@
-import { getStationsByGenre, getGenres } from '../../../lib/api';
-import { StationCard } from '../../../components';
+import { getStationsByGenre } from '../../lib/api';
+import { StationCard } from '../../components';
 import Link from 'next/link';
 
 interface PageProps {

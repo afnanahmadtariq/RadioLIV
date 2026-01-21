@@ -1,5 +1,5 @@
-import { getStationsByCountry, getCountries } from '../../../lib/api';
-import { StationCard } from '../../../components';
+import { getStationsByCountry, getCountries } from '../../lib/api';
+import { StationCard } from '../../components';
 import Link from 'next/link';
 
 interface PageProps {
