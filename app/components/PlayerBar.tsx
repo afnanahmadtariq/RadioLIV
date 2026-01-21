@@ -132,14 +132,17 @@ export default function PlayerBar() {
         );
     }
 
+    // Trim favicon URL to avoid issues with trailing spaces
+    const faviconUrl = currentStation.favicon?.trim() || '';
+
     return (
         <div className="player-bar">
             {/* Station Info */}
             <div className="player-station">
                 <div className="player-station-image">
-                    {currentStation.favicon ? (
+                    {faviconUrl ? (
                         <Image
-                            src={currentStation.favicon}
+                            src={faviconUrl}
                             alt={currentStation.name}
                             width={56}
                             height={56}
