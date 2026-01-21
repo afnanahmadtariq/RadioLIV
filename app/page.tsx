@@ -1,65 +1,117 @@
-import Image from "next/image";
+import { getPopularStations, getTrendingStations, getGenres } from './lib/api';
+import { StationCard, PopularItem, GenreTag, HeroSection } from './components';
+import Link from 'next/link';
 
-export default function Home() {
+// Featured genres with colors
+const featuredGenres = [
+  { name: 'pop', label: 'Pop', color: 'linear-gradient(135deg, #e91e63 0%, #9c27b0 100%)' },
+  { name: 'rock', label: 'Rock', color: 'linear-gradient(135deg, #ff5722 0%, #e91e63 100%)' },
+  { name: 'jazz', label: 'Jazz', color: 'linear-gradient(135deg, #3f51b5 0%, #2196f3 100%)' },
+  { name: 'classical', label: 'Classical', color: 'linear-gradient(135deg, #9c27b0 0%, #673ab7 100%)' },
+  { name: 'electronic', label: 'Electronic', color: 'linear-gradient(135deg, #00bcd4 0%, #009688 100%)' },
+  { name: 'hip hop', label: 'Hip Hop', color: 'linear-gradient(135deg, #ff9800 0%, #ff5722 100%)' },
+];
+
+export default async function Home() {
+  // Fetch data in parallel
+  const [popularStations, trendingStations, genres] = await Promise.all([
+    getPopularStations(20),
+    getTrendingStations(10),
+    getGenres(50),
+  ]);
+
+  // Get featured station (most voted)
+  const featuredStation = popularStations[0];
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="animate-fade-in">
+      {/* Hero Section */}
+      {featuredStation && <HeroSection station={featuredStation} />}
+
+      {/* Trending Stations Carousel */}
+      <section style={{ marginBottom: '40px' }}>
+        <div className="section-header">
+          <h2 className="section-title">🔥 Trending Now</h2>
+          <div className="section-nav">
+            <Link href="/radio" className="btn btn-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+              </svg>
+            </Link>
+            <Link href="/radio" className="btn btn-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+              </svg>
+            </Link>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div className="stations-carousel">
+          {trendingStations.map((station) => (
+            <StationCard key={station.stationuuid} station={station} />
+          ))}
         </div>
-      </main>
+      </section>
+
+      {/* Two Column Layout */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px', padding: '0 32px', marginBottom: '40px' }}>
+        {/* Popular Stations */}
+        <section>
+          <h2 className="section-title" style={{ marginBottom: '16px' }}>⭐ Popular Stations</h2>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {popularStations.slice(1, 6).map((station, index) => (
+              <PopularItem key={station.stationuuid} station={station} index={index} />
+            ))}
+          </div>
+        </section>
+
+        {/* Genre Categories */}
+        <section>
+          <h2 className="section-title" style={{ marginBottom: '16px' }}>🎵 Browse by Genre</h2>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: '12px'
+          }}>
+            {featuredGenres.map((genre) => (
+              <Link
+                key={genre.name}
+                href={`/genre/${encodeURIComponent(genre.name)}`}
+                className="category-card"
+                style={{ background: genre.color }}
+              >
+                <div className="category-card-content">
+                  <h3 className="category-card-name">{genre.label}</h3>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      </div>
+
+      {/* More Stations Grid */}
+      <section style={{ marginBottom: '40px' }}>
+        <div className="section-header">
+          <h2 className="section-title">🎧 More Stations</h2>
+          <Link href="/radio" className="btn btn-secondary" style={{ padding: '8px 16px', fontSize: '13px' }}>
+            View All
+          </Link>
+        </div>
+        <div className="stations-grid">
+          {popularStations.slice(6, 14).map((station) => (
+            <StationCard key={station.stationuuid} station={station} />
+          ))}
+        </div>
+      </section>
+
+      {/* Top Genres Tags */}
+      <section style={{ padding: '0 32px', marginBottom: '60px' }}>
+        <h2 className="section-title" style={{ marginBottom: '16px' }}>🏷️ Popular Tags</h2>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+          {genres.slice(0, 20).map((genre) => (
+            <GenreTag key={genre.name} name={genre.name} count={genre.stationcount} />
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
