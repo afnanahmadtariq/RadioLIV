@@ -5,6 +5,7 @@ export { default as StationCard } from './StationCard';
 export { default as PopularItem } from './PopularItem';
 export { default as SafeImage } from './SafeImage';
 export { default as GenreTag } from './GenreTag';
+export { default as GenreCard } from './GenreCard';
 export { default as HeroSection } from './HeroSection';
 export { default as CountryCard } from './CountryCard';
 export { default as PwaRegistrar } from './PwaRegistrar';

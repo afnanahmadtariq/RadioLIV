@@ -130,7 +130,7 @@ body {
   position: fixed;
   width: var(--sidebar-width);
   height: calc(100vh - var(--player-height));
-  overflow-y: hidden;
+  overflow-y: auto;
 }
 
 .sidebar-section {
