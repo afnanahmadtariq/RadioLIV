@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { useMemo } from 'react';
 import { getGenreColor, getGenreIcon } from '../lib/genreData';
 
 interface GenreCardProps {
@@ -9,7 +10,7 @@ interface GenreCardProps {
 }
 
 const GenreCard = ({ name, label, stationCount, className = '' }: GenreCardProps) => {
-    const Icon = getGenreIcon(name);
+    const Icon = useMemo(() => getGenreIcon(name), [name]);
     const color = getGenreColor(name);
     const displayName = label || name;
 

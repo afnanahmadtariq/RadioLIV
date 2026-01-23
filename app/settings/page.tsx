@@ -1,11 +1,10 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { usePlayer } from '../context/PlayerContext';
 
 export default function SettingsPage() {
     const { 
-        pause, 
         volume, 
         setVolume, 
         isMuted, 

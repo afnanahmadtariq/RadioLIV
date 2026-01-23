@@ -12,7 +12,7 @@ interface StationDetailClientProps {
 }
 
 export default function StationDetailClient({ station, relatedStations }: StationDetailClientProps) {
-    const { playStation, currentStation, isPlaying, isLoading } = usePlayer();
+    const { currentStation, isPlaying, isLoading } = usePlayer();
     const { isFavorite, toggleFavorite } = useFavorites();
 
     const isCurrentStation = currentStation?.stationuuid === station.stationuuid;
