@@ -8,8 +8,7 @@ export const size = {
 export const contentType = 'image/png';
 
 // Generate dynamic app icon
-export default function Icon({ id }: { id: string }) {
-    // Use id if available, or just default
+export default function Icon() {
 
     return new ImageResponse(
         (

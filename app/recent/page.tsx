@@ -1,38 +1,28 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { StationCard } from '../components';
 import type { RadioStation } from '../types';
 
 export default function RecentPage() {
-    const [recentStations, setRecentStations] = useState<RadioStation[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-        const stored = localStorage.getItem('recentlyPlayed');
-        if (stored) {
-            setRecentStations(JSON.parse(stored));
+    const [recentStations, setRecentStations] = useState<RadioStation[]>(() => {
+        if (typeof window !== 'undefined') {
+            const stored = localStorage.getItem('recentlyPlayed');
+            if (stored) {
+                try {
+                    return JSON.parse(stored);
+                } catch {
+                    return [];
+                }
+            }
         }
-        setIsLoading(false);
-    }, []);
+        return [];
+    });
 
     const clearHistory = () => {
         localStorage.removeItem('recentlyPlayed');
         setRecentStations([]);
     };
-
-    if (isLoading) {
-        return (
-            <div className="animate-fade-in" style={{ paddingBottom: '40px' }}>
-                <section className="hero-section" style={{ paddingBottom: '24px' }}>
-                    <div className="hero-content" style={{ maxWidth: '100%' }}>
-                        <h1 className="hero-title">🕐 Recently Played</h1>
-                        <p className="hero-subtitle">Loading your history...</p>
-                    </div>
-                </section>
-            </div>
-        );
-    }
 
     return (
         <div className="animate-fade-in" style={{ paddingBottom: '40px' }}>

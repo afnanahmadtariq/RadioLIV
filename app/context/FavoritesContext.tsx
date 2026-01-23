@@ -14,28 +14,24 @@ interface FavoritesContextType {
 const FavoritesContext = createContext<FavoritesContextType | null>(null);
 
 export function FavoritesProvider({ children }: { children: ReactNode }) {
-    const [favorites, setFavorites] = useState<RadioStation[]>([]);
-    const [isLoaded, setIsLoaded] = useState(false);
-
-    // Load favorites from localStorage on mount
-    useEffect(() => {
-        const stored = localStorage.getItem('favorites');
-        if (stored) {
-            try {
-                setFavorites(JSON.parse(stored));
-            } catch {
-                setFavorites([]);
+    const [favorites, setFavorites] = useState<RadioStation[]>(() => {
+        if (typeof window !== 'undefined') {
+            const stored = localStorage.getItem('favorites');
+            if (stored) {
+                try {
+                    return JSON.parse(stored);
+                } catch {
+                    return [];
+                }
             }
         }
-        setIsLoaded(true);
-    }, []);
+        return [];
+    });
 
     // Save favorites to localStorage whenever they change
     useEffect(() => {
-        if (isLoaded) {
-            localStorage.setItem('favorites', JSON.stringify(favorites));
-        }
-    }, [favorites, isLoaded]);
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+    }, [favorites]);
 
     const isFavorite = useCallback((stationuuid: string) => {
         return favorites.some(s => s.stationuuid === stationuuid);

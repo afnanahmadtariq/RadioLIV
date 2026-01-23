@@ -19,7 +19,6 @@ self.addEventListener('notificationclick', function (event) {
     console.log('Notification click received.');
     event.notification.close();
     event.waitUntil(
-        // eslint-disable-next-line no-undef
         clients.openWindow('/')
     );
 });
