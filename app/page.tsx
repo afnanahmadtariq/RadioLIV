@@ -1,5 +1,5 @@
 import { getPopularStations, getTrendingStations, getGenres } from './lib/api';
-import { StationCard, PopularItem, GenreTag, HeroSection } from './components';
+import { StationCard, PopularItem, GenreTag, HeroSection, GenreCard } from './components';
 import Link from 'next/link';
 
 // Featured genres with colors
@@ -73,16 +73,11 @@ export default async function Home() {
             gap: '12px'
           }}>
             {featuredGenres.map((genre) => (
-              <Link
+              <GenreCard
                 key={genre.name}
-                href={`/genre/${encodeURIComponent(genre.name)}`}
-                className="category-card"
-                style={{ background: genre.color }}
-              >
-                <div className="category-card-content">
-                  <h3 className="category-card-name">{genre.label}</h3>
-                </div>
-              </Link>
+                name={genre.name}
+                label={genre.label}
+              />
             ))}
           </div>
         </section>
