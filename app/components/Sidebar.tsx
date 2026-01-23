@@ -69,9 +69,8 @@ export default function Sidebar() {
 
     return (
         <aside className="sidebar">
-            {/* User Profile */}
             <div className="user-profile">
-                <div className="user-avatar">🎧</div>
+                <div className="user-avatar">📻</div>
                 <div className="user-info">
                     <h3>RadioLIV</h3>
                     <span>Online Radio</span>
