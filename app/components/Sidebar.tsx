@@ -69,12 +69,9 @@ export default function Sidebar() {
 
     return (
         <aside className="sidebar">
-            <div className="flex items-center gap-3 px-5 py-4 mb-4">
+            <div className="flex items-center gap-2 px-5 mb-2">
                 <div className="w-14 h-14 flex items-center justify-center font-semibold text-[32px]">📻</div>
-                <div>
-                    <h3 className="text-xl font-semibold m-0">RadioLIV</h3>
-                    <span className="text-xs text-(--accent-green)">Online Radio</span>
-                </div>
+                <h3 className="text-xl font-semibold">RadioLIV</h3>
             </div>
 
             {/* Library */}
