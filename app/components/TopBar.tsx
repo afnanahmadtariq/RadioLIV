@@ -32,7 +32,7 @@ export default function TopBar() {
                 />
             </form>
 
-            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+            <div className="flex gap-3 items-center">
                 <button className="btn btn-primary">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />

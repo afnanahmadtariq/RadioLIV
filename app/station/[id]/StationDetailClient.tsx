@@ -39,23 +39,14 @@ export default function StationDetailClient({ station, relatedStations }: Statio
     const tags = station.tags?.split(',').filter(t => t.trim()) || [];
 
     return (
-        <div className="animate-fade-in" style={{ paddingBottom: '40px' }}>
+        <div className="animate-fade-in pb-10">
             {/* Header */}
             <section className="hero-section" style={{
-                background: 'linear-gradient(135deg, rgba(233, 30, 99, 0.2) 0%, rgba(156, 39, 176, 0.15) 100%)',
-                paddingBottom: '40px'
+                background: 'linear-gradient(135deg, rgba(233, 30, 99, 0.2) 0%, rgba(156, 39, 176, 0.15) 100%)'
             }}>
                 <Link
                     href="/"
-                    style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '8px',
-                        color: 'var(--text-secondary)',
-                        textDecoration: 'none',
-                        marginBottom: '24px',
-                        fontSize: '14px'
-                    }}
+                    className="inline-flex items-center gap-2 text-[var(--text-secondary)] no-underline mb-6 text-sm hover:text-[var(--text-primary)]"
                 >
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
@@ -63,24 +54,16 @@ export default function StationDetailClient({ station, relatedStations }: Statio
                     Back to Home
                 </Link>
 
-                <div style={{ display: 'flex', gap: '32px', alignItems: 'flex-start' }}>
+                <div className="flex gap-8 items-start">
                     {/* Station Image */}
-                    <div style={{
-                        width: '200px',
-                        height: '200px',
-                        borderRadius: 'var(--radius-xl)',
-                        overflow: 'hidden',
-                        background: 'var(--bg-secondary)',
-                        flexShrink: 0,
-                        boxShadow: 'var(--shadow-card)',
-                    }}>
+                    <div className="w-[200px] h-[200px] rounded-[var(--radius-xl)] overflow-hidden bg-[var(--bg-secondary)] flex-shrink-0 shadow-[var(--shadow-card)]">
                         {station.favicon ? (
                             <SafeImage
                                 src={station.favicon}
                                 alt={station.name}
                                 width={200}
                                 height={200}
-                                style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                                className="object-cover w-full h-full"
                                 fallback={
                                     <div style={{
                                         width: '100%',
@@ -111,25 +94,22 @@ export default function StationDetailClient({ station, relatedStations }: Statio
                     </div>
 
                     {/* Station Info */}
-                    <div style={{ flex: 1 }}>
-                        <div className="live-indicator" style={{ marginBottom: '8px' }}>
+                    <div className="flex-1">
+                        <div className="live-indicator mb-2">
                             <span className="live-dot"></span>
                             RADIO STATION
                         </div>
-                        <h1 className="hero-title" style={{ fontSize: '42px', marginBottom: '8px' }}>
+                        <h1 className="hero-title text-[42px] mb-2">
                             {station.name}
                         </h1>
-                        <p className="hero-subtitle" style={{ marginBottom: '20px' }}>
+                        <p className="hero-subtitle mb-5">
                             {station.country} {station.state && `• ${station.state}`} • {station.bitrate || 128} kbps • {station.codec || 'MP3'}
                         </p>
 
                         {/* Action Buttons */}
-                        <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
+                        <div className="flex gap-3 mb-6">
                             <button
-                                className="btn btn-primary"
-                                onClick={() => playStation(station)}
-                                disabled={isLoading && isCurrentStation}
-                                style={{ minWidth: '140px' }}
+                                className="btn btn-primary min-w-[140px]"
                             >
                                 {isLoading && isCurrentStation ? (
                                     <>⏳ Loading...</>
@@ -170,20 +150,12 @@ export default function StationDetailClient({ station, relatedStations }: Statio
 
                         {/* Tags */}
                         {tags.length > 0 && (
-                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                            <div className="flex flex-wrap gap-2">
                                 {tags.slice(0, 8).map((tag) => (
                                     <Link
                                         key={tag}
                                         href={`/genre/${encodeURIComponent(tag.trim())}`}
-                                        style={{
-                                            padding: '6px 12px',
-                                            background: 'var(--bg-card)',
-                                            border: '1px solid var(--border-color)',
-                                            borderRadius: 'var(--radius-full)',
-                                            color: 'var(--text-secondary)',
-                                            fontSize: '12px',
-                                            textDecoration: 'none',
-                                        }}
+                                        className="px-3 py-1.5 bg-[var(--bg-card)] border border-[var(--border-color)] rounded-[var(--radius-full)] text-[var(--text-secondary)] text-xs no-underline hover:bg-[var(--bg-card-hover)] hover:text-[var(--text-primary)]"
                                     >
                                         {tag.trim()}
                                     </Link>
@@ -195,49 +167,41 @@ export default function StationDetailClient({ station, relatedStations }: Statio
             </section>
 
             {/* Station Details */}
-            <section style={{ padding: '32px', marginBottom: '20px' }}>
-                <h2 className="section-title" style={{ marginBottom: '20px' }}>📋 Station Details</h2>
-                <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-                    gap: '16px',
-                    background: 'var(--bg-card)',
-                    padding: '24px',
-                    borderRadius: 'var(--radius-lg)',
-                    border: '1px solid var(--border-color)',
-                }}>
+            <section className="px-8 py-0 mb-5">
+                <h2 className="section-title mb-5">📋 Station Details</h2>
+                <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4 bg-[var(--bg-card)] p-6 rounded-[var(--radius-lg)] border border-[var(--border-color)]">
                     <div>
-                        <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '4px' }}>Country</p>
-                        <p style={{ fontSize: '14px', fontWeight: 500 }}>{station.country || 'Unknown'}</p>
+                        <p className="text-xs text-[var(--text-muted)] mb-1">Country</p>
+                        <p className="text-sm font-medium">{station.country || 'Unknown'}</p>
                     </div>
                     <div>
-                        <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '4px' }}>Language</p>
-                        <p style={{ fontSize: '14px', fontWeight: 500 }}>{station.language || 'Unknown'}</p>
+                        <p className="text-xs text-[var(--text-muted)] mb-1">Language</p>
+                        <p className="text-sm font-medium">{station.language || 'Unknown'}</p>
                     </div>
                     <div>
-                        <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '4px' }}>Bitrate</p>
-                        <p style={{ fontSize: '14px', fontWeight: 500 }}>{station.bitrate || 128} kbps</p>
+                        <p className="text-xs text-[var(--text-muted)] mb-1">Bitrate</p>
+                        <p className="text-sm font-medium">{station.bitrate || 128} kbps</p>
                     </div>
                     <div>
-                        <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '4px' }}>Codec</p>
-                        <p style={{ fontSize: '14px', fontWeight: 500 }}>{station.codec || 'MP3'}</p>
+                        <p className="text-xs text-[var(--text-muted)] mb-1">Codec</p>
+                        <p className="text-sm font-medium">{station.codec || 'MP3'}</p>
                     </div>
                     <div>
-                        <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '4px' }}>Votes</p>
-                        <p style={{ fontSize: '14px', fontWeight: 500 }}>{station.votes?.toLocaleString() || 0}</p>
+                        <p className="text-xs text-[var(--text-muted)] mb-1">Votes</p>
+                        <p className="text-sm font-medium">{station.votes?.toLocaleString() || 0}</p>
                     </div>
                     <div>
-                        <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '4px' }}>Clicks</p>
-                        <p style={{ fontSize: '14px', fontWeight: 500 }}>{station.clickcount?.toLocaleString() || 0}</p>
+                        <p className="text-xs text-[var(--text-muted)] mb-1">Clicks</p>
+                        <p className="text-sm font-medium">{station.clickcount?.toLocaleString() || 0}</p>
                     </div>
                     {station.homepage && (
-                        <div style={{ gridColumn: 'span 2' }}>
-                            <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '4px' }}>Website</p>
+                        <div className="col-span-2">
+                            <p className="text-xs text-[var(--text-muted)] mb-1">Website</p>
                             <a
                                 href={station.homepage}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                style={{ fontSize: '14px', color: 'var(--accent-primary)', textDecoration: 'none' }}
+                                className="text-sm text-[var(--accent-primary)] no-underline hover:underline"
                             >
                                 {station.homepage}
                             </a>
@@ -248,7 +212,7 @@ export default function StationDetailClient({ station, relatedStations }: Statio
 
             {/* Related Stations */}
             {relatedStations.length > 0 && (
-                <section style={{ marginBottom: '40px' }}>
+                <section className="mb-10">
                     <div className="section-header">
                         <h2 className="section-title">🎵 Similar Stations</h2>
                     </div>

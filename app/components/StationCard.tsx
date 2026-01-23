@@ -34,19 +34,13 @@ export default function StationCard({ station }: StationCardProps) {
                         width={160}
                         height={160}
                         unoptimized
-                        style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                        className="object-cover w-full h-full"
                         onError={(e) => {
                             (e.target as HTMLImageElement).style.display = 'none';
                         }}
                     />
                 ) : (
-                    <div style={{
-                        width: '100%',
-                        height: '100%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '48px',
+                    <div className="w-full h-full flex items-center justify-center text-5xl" style={{
                         background: `linear-gradient(135deg, hsl(${station.name.length * 20}, 70%, 40%) 0%, hsl(${station.name.length * 30}, 60%, 30%) 100%)`
                     }}>
                         📻

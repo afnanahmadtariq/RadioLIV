@@ -16,50 +16,23 @@ export default function CountryCard({ code, name, stationCount }: CountryCardPro
     return (
         <Link
             href={`/country/${code}`}
-            style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '16px',
-                padding: '16px 20px',
-                background: 'var(--bg-card)',
-                border: '1px solid var(--border-color)',
-                borderRadius: 'var(--radius-lg)',
-                textDecoration: 'none',
-                color: 'var(--text-primary)',
-                transition: 'all var(--transition-fast)',
-            }}
-            onMouseOver={(e) => {
-                e.currentTarget.style.background = 'var(--bg-card-hover)';
-                e.currentTarget.style.transform = 'translateY(-2px)';
-            }}
-            onMouseOut={(e) => {
-                e.currentTarget.style.background = 'var(--bg-card)';
-                e.currentTarget.style.transform = 'translateY(0)';
-            }}
+            className="flex items-center gap-4 px-5 py-4 bg-[var(--bg-card)] border border-[var(--border-color)] rounded-[var(--radius-lg)] no-underline text-[var(--text-primary)] transition-all duration-150 hover:bg-[var(--bg-card-hover)] hover:-translate-y-0.5"
         >
-            <div style={{
-                width: '40px',
-                height: '30px',
-                position: 'relative',
-                flexShrink: 0,
-                borderRadius: '4px',
-                overflow: 'hidden',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
-            }}>
+            <div className="w-10 h-[30px] relative flex-shrink-0 rounded overflow-hidden shadow-md">
                 <Image
                     src={flagUrl}
                     alt={`${name} flag`}
                     fill
                     sizes="40px"
-                    style={{ objectFit: 'cover' }}
+                    className="object-cover"
                     unoptimized // flagcdn handles optimization
                 />
             </div>
-            <div style={{ flex: 1 }}>
-                <h3 style={{ margin: 0, fontSize: '15px', fontWeight: 600 }}>
+            <div className="flex-1">
+                <h3 className="m-0 text-[15px] font-semibold">
                     {name}
                 </h3>
-                <p style={{ margin: 0, fontSize: '13px', color: 'var(--text-muted)' }}>
+                <p className="m-0 text-[13px] text-[var(--text-muted)]">
                     {stationCount.toLocaleString()} stations
                 </p>
             </div>

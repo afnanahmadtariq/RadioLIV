@@ -19,7 +19,7 @@ export default function HeroSection({ station }: HeroSectionProps) {
     return (
         <section className="hero-section">
             <div className="hero-content">
-                <div className="live-indicator" style={{ marginBottom: '16px' }}>
+                <div className="live-indicator mb-4">
                     <span className="live-dot"></span>
                     FEATURED STATION
                 </div>
@@ -69,15 +69,9 @@ export default function HeroSection({ station }: HeroSectionProps) {
                         alt={station.name}
                         width={300}
                         height={300}
-                        style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                        className="object-cover w-full h-full"
                         fallback={
-                            <div style={{
-                                width: '100%',
-                                height: '100%',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                fontSize: '80px',
+                            <div className="w-full h-full flex items-center justify-center text-[80px]" style={{
                                 background: 'linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%)'
                             }}>
                                 📻

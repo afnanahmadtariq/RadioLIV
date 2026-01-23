@@ -11,26 +11,9 @@ export default function GenreTag({ name, count }: GenreTagProps) {
     return (
         <Link
             href={`/genre/${encodeURIComponent(name)}`}
-            style={{
-                padding: '8px 16px',
-                background: 'var(--bg-card)',
-                border: '1px solid var(--border-color)',
-                borderRadius: 'var(--radius-full)',
-                color: 'var(--text-secondary)',
-                fontSize: '13px',
-                textDecoration: 'none',
-                transition: 'all var(--transition-fast)',
-            }}
-            onMouseOver={(e) => {
-                e.currentTarget.style.background = 'var(--bg-card-hover)';
-                e.currentTarget.style.color = 'var(--text-primary)';
-            }}
-            onMouseOut={(e) => {
-                e.currentTarget.style.background = 'var(--bg-card)';
-                e.currentTarget.style.color = 'var(--text-secondary)';
-            }}
+            className="inline-block px-4 py-2 bg-[var(--bg-card)] border border-[var(--border-color)] rounded-[var(--radius-full)] text-[var(--text-secondary)] text-[13px] no-underline transition-all duration-150 hover:bg-[var(--bg-card-hover)] hover:text-[var(--text-primary)]"
         >
-            {name} <span style={{ color: 'var(--text-muted)' }}>({count})</span>
+            {name} <span className="text-[var(--text-muted)]">({count})</span>
         </Link>
     );
 }

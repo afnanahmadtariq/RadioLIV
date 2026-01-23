@@ -21,13 +21,7 @@ export default function PopularItem({ station, index }: PopularItemProps) {
             className={`popular-item ${isCurrentStation ? 'playing' : ''}`}
             onClick={() => playStation(station)}
         >
-            <span style={{
-                width: '24px',
-                textAlign: 'center',
-                color: 'var(--text-muted)',
-                fontSize: '14px',
-                fontWeight: '500'
-            }}>
+            <span className="w-6 text-center text-[var(--text-muted)] text-sm font-medium">
                 {index + 1}
             </span>
 
@@ -45,13 +39,7 @@ export default function PopularItem({ station, index }: PopularItemProps) {
                         }}
                     />
                 ) : (
-                    <div style={{
-                        width: '100%',
-                        height: '100%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '20px',
+                    <div className="w-full h-full flex items-center justify-center text-xl" style={{
                         background: `linear-gradient(135deg, hsl(${station.name.length * 20}, 70%, 40%) 0%, hsl(${station.name.length * 30}, 60%, 30%) 100%)`
                     }}>
                         📻

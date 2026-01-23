@@ -82,13 +82,7 @@ export default function PlayerBar() {
         return (
             <div className="player-bar">
                 <div className="player-station">
-                    <div className="player-station-image" style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: 'var(--text-muted)',
-                        fontSize: '24px'
-                    }}>
+                    <div className="player-station-image flex items-center justify-center text-[var(--text-muted)] text-2xl">
                         🎵
                     </div>
                     <div className="player-station-info">
@@ -152,14 +146,7 @@ export default function PlayerBar() {
                             }}
                         />
                     ) : (
-                        <div style={{
-                            width: '100%',
-                            height: '100%',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontSize: '24px'
-                        }}>
+                        <div className="w-full h-full flex items-center justify-center text-2xl">
                             📻
                         </div>
                     )}
@@ -186,9 +173,8 @@ export default function PlayerBar() {
                         <SkipPrevIcon />
                     </button>
                     <button
-                        className="player-btn player-btn-main"
+                        className="player-btn player-btn-main relative"
                         onClick={togglePlay}
-                        style={{ position: 'relative' }}
                     >
                         {isLoading ? (
                             <div className="animate-pulse">⏳</div>

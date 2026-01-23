@@ -112,7 +112,7 @@ export default function Sidebar() {
             </div>
 
             {/* Settings & Footer */}
-            <div className="sidebar-section" style={{ marginTop: 'auto' }}>
+            <div className="sidebar-section mt-auto">
                 <nav className="sidebar-nav">
                     <Link
                         href="/settings"
@@ -124,34 +124,19 @@ export default function Sidebar() {
                 </nav>
 
                 {/* Legal Links */}
-                <div style={{
-                    padding: '16px 12px',
-                    marginTop: '16px',
-                    borderTop: '1px solid var(--border-color)'
-                }}>
-                    <div style={{
-                        display: 'flex',
-                        flexWrap: 'wrap',
-                        gap: '12px',
-                        fontSize: '11px',
-                        color: 'var(--text-muted)',
-                    }}>
-                        <Link href="/terms" style={{ color: 'inherit', textDecoration: 'none' }}>
+                <div className="px-3 pt-4 mt-4 border-t border-[var(--border-color)]">
+                    <div className="flex flex-wrap gap-3 text-[11px] text-[var(--text-muted)]">
+                        <Link href="/terms" className="text-inherit no-underline hover:text-[var(--text-secondary)]">
                             Terms
                         </Link>
-                        <Link href="/privacy" style={{ color: 'inherit', textDecoration: 'none' }}>
+                        <Link href="/privacy" className="text-inherit no-underline hover:text-[var(--text-secondary)]">
                             Privacy
                         </Link>
-                        <Link href="/dmca" style={{ color: 'inherit', textDecoration: 'none' }}>
+                        <Link href="/dmca" className="text-inherit no-underline hover:text-[var(--text-secondary)]">
                             DMCA
                         </Link>
                     </div>
-                    <p style={{
-                        fontSize: '10px',
-                        color: 'var(--text-muted)',
-                        marginTop: '8px',
-                        opacity: 0.7
-                    }}>
+                    <p className="text-[10px] text-[var(--text-muted)] mt-2 opacity-70">
                         © 2026 RadioLIV
                     </p>
                 </div>
