@@ -206,7 +206,7 @@ export default function PlayerBar() {
                     </button>
                 </div>
 
-                <div className="player-progress">
+                {/* <div className="player-progress">
                     <span className="player-time">
                         <span className="live-dot"></span>
                     </span>
@@ -217,7 +217,7 @@ export default function PlayerBar() {
                         />
                     </div>
                     <span className="player-time live-indicator">LIVE</span>
-                </div>
+                </div> */}
             </div>
 
             {/* Volume */}
