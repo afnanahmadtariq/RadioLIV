@@ -21,25 +21,32 @@ export default function TopBar() {
     };
 
     return (
-        <header className="topbar">
-            <form onSubmit={handleSearch} className="search-box">
-                <SearchIcon />
-                <input
-                    type="text"
-                    placeholder="Search stations, genres, countries..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                />
-            </form>
+        <>
+            <header className="fixed top-0 right-0 z-20 flex items-center justify-between px-8 py-4 bg-transparent backdrop-blur-md left-[var(--sidebar-width)] border-b border-(--border-color)">
+                <form onSubmit={handleSearch} className="flex items-center gap-3 bg-(--bg-card) border border-(--border-color) rounded-full px-5 py-2.5 w-[320px] transition-all duration-150 focus-within:border-[var(--accent-primary)] focus-within:bg-[var(--bg-card-hover)]">
+                    <div className="w-4.5 h-4.5 text-(--text-muted) shrink-0">
+                        <SearchIcon />
+                    </div>
+                    <input
+                        type="text"
+                        placeholder="Search stations, genres, countries..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="bg-transparent border-none outline-none text-foreground text-sm w-full placeholder-(--text-muted)"
+                    />
+                </form>
 
-            <div className="flex gap-3 items-center">
-                <button className="btn btn-primary">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
-                    </svg>
-                    Add Station
-                </button>
-            </div>
-        </header>
+                {/* <div className="flex gap-3 items-center">
+                    <button className="btn btn-primary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
+                        </svg>
+                        Add Station
+                    </button>
+                </div> */}
+            </header>
+            {/* Spacer to prevent content overlap */}
+            <div className="h-20" />
+        </>
     );
 }
