@@ -62,7 +62,7 @@ export default async function GenrePage({ params }: PageProps) {
                 {stations.length > 0 ? (
                     <div className="stations-grid">
                         {stations.map((station) => (
-                            <StationCard key={station.stationuuid} station={station} />
+                            <StationCard key={station.stationuuid} station={station} stationList={stations} />
                         ))}
                     </div>
                 ) : (

@@ -7,9 +7,10 @@ import type { RadioStation } from '../types';
 
 interface HeroSectionProps {
     station: RadioStation;
+    stationList?: RadioStation[];
 }
 
-export default function HeroSection({ station }: HeroSectionProps) {
+export default function HeroSection({ station, stationList }: HeroSectionProps) {
     const { playStation, currentStation, isPlaying, isLoading } = usePlayer();
     const { isFavorite, toggleFavorite } = useFavorites();
 
@@ -30,7 +31,7 @@ export default function HeroSection({ station }: HeroSectionProps) {
                 <div className="hero-actions">
                     <button
                         className="btn btn-primary"
-                        onClick={() => playStation(station)}
+                        onClick={() => playStation(station, stationList)}
                         disabled={isLoading && isCurrentStation}
                     >
                         {isLoading && isCurrentStation ? (

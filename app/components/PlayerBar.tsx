@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { usePlayer } from '../context/PlayerContext';
 import { useFavorites } from '../context/FavoritesContext';
 import Image from 'next/image';
@@ -29,15 +30,9 @@ const SkipPrevIcon = () => (
     </svg>
 );
 
-const ShuffleIcon = () => (
+const SleepTimerIcon = () => (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z" />
-    </svg>
-);
-
-const RepeatIcon = () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z" />
+        <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm4.2 14.2L11 13V7h1.5v5.2l4.5 2.7-.8 1.3z" />
     </svg>
 );
 
@@ -57,12 +52,6 @@ const HeartIcon = ({ filled = false }: { filled?: boolean }) => (
     </svg>
 );
 
-const QueueIcon = () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M15 6H3v2h12V6zm0 4H3v2h12v-2zM3 16h8v-2H3v2zM17 6v8.18c-.31-.11-.65-.18-1-.18-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3V8h3V6h-5z" />
-    </svg>
-);
-
 export default function PlayerBar() {
     const {
         currentStation,
@@ -73,7 +62,32 @@ export default function PlayerBar() {
         togglePlay,
         setVolume,
         toggleMute,
+        nextStation,
+        previousStation,
+        hasNext,
+        hasPrevious,
+        sleepTimer,
+        timeRemaining,
+        startSleepTimer,
+        cancelSleepTimer,
     } = usePlayer();
+
+    const [showSleepMenu, setShowSleepMenu] = React.useState(false);
+
+    const handleSleepTimer = (minutes: number) => {
+        startSleepTimer(minutes);
+        setShowSleepMenu(false);
+    };
+
+    const formatTime = (seconds: number) => {
+        const h = Math.floor(seconds / 3600);
+        const m = Math.floor((seconds % 3600) / 60);
+        const s = seconds % 60;
+        if (h > 0) {
+            return `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }
+        return `${m}:${s.toString().padStart(2, '0')}`;
+    };
 
     const { isFavorite, toggleFavorite } = useFavorites();
     const isStationFavorite = currentStation ? isFavorite(currentStation.stationuuid) : false;
@@ -94,9 +108,6 @@ export default function PlayerBar() {
                 <div className="player-controls">
                     <div className="player-buttons">
                         <button className="player-btn" disabled>
-                            <ShuffleIcon />
-                        </button>
-                        <button className="player-btn" disabled>
                             <SkipPrevIcon />
                         </button>
                         <button className="player-btn player-btn-main" disabled style={{ opacity: 0.5 }}>
@@ -105,15 +116,12 @@ export default function PlayerBar() {
                         <button className="player-btn" disabled>
                             <SkipNextIcon />
                         </button>
-                        <button className="player-btn" disabled>
-                            <RepeatIcon />
-                        </button>
                     </div>
                 </div>
 
                 <div className="player-volume">
                     <button className="player-btn" disabled>
-                        <QueueIcon />
+                        <SleepTimerIcon />
                     </button>
                     <button className="player-btn" disabled>
                         <VolumeIcon />
@@ -166,10 +174,13 @@ export default function PlayerBar() {
             {/* Controls */}
             <div className="player-controls">
                 <div className="player-buttons">
-                    <button className="player-btn">
-                        <ShuffleIcon />
-                    </button>
-                    <button className="player-btn">
+                    <button 
+                        className="player-btn"
+                        onClick={previousStation}
+                        disabled={!hasPrevious}
+                        style={{ opacity: hasPrevious ? 1 : 0.3 }}
+                        title="Previous station"
+                    >
                         <SkipPrevIcon />
                     </button>
                     <button
@@ -184,11 +195,14 @@ export default function PlayerBar() {
                             <PlayIcon />
                         )}
                     </button>
-                    <button className="player-btn">
+                    <button 
+                        className="player-btn"
+                        onClick={nextStation}
+                        disabled={!hasNext}
+                        style={{ opacity: hasNext ? 1 : 0.3 }}
+                        title="Next station"
+                    >
                         <SkipNextIcon />
-                    </button>
-                    <button className="player-btn">
-                        <RepeatIcon />
                     </button>
                 </div>
 
@@ -208,9 +222,58 @@ export default function PlayerBar() {
 
             {/* Volume */}
             <div className="player-volume">
-                <button className="player-btn">
-                    <QueueIcon />
-                </button>
+                <div className="relative">
+                    <button 
+                        className={`player-btn ${sleepTimer ? 'text-[var(--accent-primary)]' : ''}`}
+                        onClick={() => setShowSleepMenu(!showSleepMenu)}
+                        title={sleepTimer ? `Sleep timer: ${formatTime(timeRemaining)}` : 'Set sleep timer'}
+                    >
+                        <SleepTimerIcon />
+                        {sleepTimer && (
+                            <span className="absolute -top-1 -right-1 w-4 h-4 bg-[var(--accent-primary)] rounded-full text-[10px] flex items-center justify-center text-white font-bold">
+                                ✓
+                            </span>
+                        )}
+                    </button>
+                    {showSleepMenu && (
+                        <div className="sleep-timer-menu">
+                            <div className="text-xs text-[var(--text-muted)] px-3 py-2 font-semibold border-b border-[var(--border)]">
+                                Sleep Timer
+                            </div>
+                            {sleepTimer ? (
+                                <div className="px-3 py-4">
+                                    <div className="text-center mb-3">
+                                        <div className="text-xs text-[var(--text-muted)] mb-1">Time remaining</div>
+                                        <div className="text-2xl font-bold text-[var(--accent-primary)]">
+                                            {formatTime(timeRemaining)}
+                                        </div>
+                                    </div>
+                                    <button
+                                        className="w-full text-center px-3 py-2 text-sm hover:bg-[var(--hover-bg)] rounded font-medium text-[var(--accent-primary)]"
+                                        onClick={() => {
+                                            cancelSleepTimer();
+                                            setShowSleepMenu(false);
+                                        }}
+                                    >
+                                        Cancel Timer
+                                    </button>
+                                </div>
+                            ) : (
+                                <>
+                                    {[15, 30, 45, 60, 90, 120].map(minutes => (
+                                        <button
+                                            key={minutes}
+                                            className="w-full text-left px-3 py-2 text-sm hover:bg-[var(--hover-bg)] transition-colors"
+                                            onClick={() => handleSleepTimer(minutes)}
+                                        >
+                                            {minutes} minutes
+                                        </button>
+                                    ))}
+                                </>
+                            )}
+                        </div>
+                    )}
+                </div>
                 <button className="player-btn" onClick={toggleMute}>
                     <VolumeIcon muted={isMuted} />
                 </button>

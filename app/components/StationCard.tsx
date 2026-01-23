@@ -12,19 +12,24 @@ const PlayIcon = () => (
 
 interface StationCardProps {
     station: RadioStation;
+    stationList?: RadioStation[];
 }
 
-export default function StationCard({ station }: StationCardProps) {
+export default function StationCard({ station, stationList }: StationCardProps) {
     const { playStation, currentStation, isPlaying } = usePlayer();
     const isCurrentStation = currentStation?.stationuuid === station.stationuuid;
 
     // Trim favicon URL to avoid issues with trailing spaces
     const faviconUrl = station.favicon?.trim() || '';
 
+    const handlePlay = () => {
+        playStation(station, stationList);
+    };
+
     return (
         <div
             className={`station-card ${isCurrentStation ? 'playing' : ''}`}
-            onClick={() => playStation(station)}
+            onClick={handlePlay}
         >
             <div className="station-card-image">
                 {faviconUrl ? (
@@ -50,7 +55,7 @@ export default function StationCard({ station }: StationCardProps) {
                     className="station-card-play"
                     onClick={(e) => {
                         e.stopPropagation();
-                        playStation(station);
+                        handlePlay();
                     }}
                 >
                     {isCurrentStation && isPlaying ? (

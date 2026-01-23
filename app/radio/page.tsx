@@ -26,7 +26,7 @@ export default async function RadioPage() {
             <section>
                 <div className="stations-grid">
                     {stations.map((station) => (
-                        <StationCard key={station.stationuuid} station={station} />
+                        <StationCard key={station.stationuuid} station={station} stationList={stations} />
                     ))}
                 </div>
             </section>

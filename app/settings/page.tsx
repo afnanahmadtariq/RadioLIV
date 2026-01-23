@@ -4,11 +4,19 @@ import { useState, useEffect, useCallback } from 'react';
 import { usePlayer } from '../context/PlayerContext';
 
 export default function SettingsPage() {
-    const { pause, volume, setVolume, isMuted, toggleMute } = usePlayer();
+    const { 
+        pause, 
+        volume, 
+        setVolume, 
+        isMuted, 
+        toggleMute,
+        sleepTimer,
+        timeRemaining,
+        startSleepTimer,
+        cancelSleepTimer,
+    } = usePlayer();
 
-    // Sleep Timer State
-    const [sleepTimer, setSleepTimer] = useState<number | null>(null);
-    const [timeRemaining, setTimeRemaining] = useState<number>(0);
+    // Custom minutes input
     const [customMinutes, setCustomMinutes] = useState('');
 
     // Sleep timer presets
@@ -19,34 +27,6 @@ export default function SettingsPage() {
         { label: '1 hour', value: 60 },
         { label: '2 hours', value: 120 },
     ];
-
-    const startSleepTimer = useCallback((minutes: number) => {
-        setSleepTimer(Date.now() + minutes * 60 * 1000);
-        setTimeRemaining(minutes * 60);
-    }, []);
-
-    const cancelSleepTimer = useCallback(() => {
-        setSleepTimer(null);
-        setTimeRemaining(0);
-    }, []);
-
-    // Sleep timer countdown
-    useEffect(() => {
-        if (!sleepTimer) return;
-
-        const interval = setInterval(() => {
-            const remaining = Math.max(0, Math.floor((sleepTimer - Date.now()) / 1000));
-            setTimeRemaining(remaining);
-
-            if (remaining <= 0) {
-                pause();
-                setSleepTimer(null);
-                setTimeRemaining(0);
-            }
-        }, 1000);
-
-        return () => clearInterval(interval);
-    }, [sleepTimer, pause]);
 
     const formatTime = (seconds: number) => {
         const h = Math.floor(seconds / 3600);

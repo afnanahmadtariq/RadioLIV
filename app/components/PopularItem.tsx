@@ -7,9 +7,10 @@ import type { RadioStation } from '../types';
 interface PopularItemProps {
     station: RadioStation;
     index: number;
+    stationList?: RadioStation[];
 }
 
-export default function PopularItem({ station, index }: PopularItemProps) {
+export default function PopularItem({ station, index, stationList }: PopularItemProps) {
     const { playStation, currentStation, isPlaying } = usePlayer();
     const isCurrentStation = currentStation?.stationuuid === station.stationuuid;
 
@@ -19,7 +20,7 @@ export default function PopularItem({ station, index }: PopularItemProps) {
     return (
         <div
             className={`popular-item ${isCurrentStation ? 'playing' : ''}`}
-            onClick={() => playStation(station)}
+            onClick={() => playStation(station, stationList)}
         >
             <span className="w-6 text-center text-[var(--text-muted)] text-sm font-medium">
                 {index + 1}

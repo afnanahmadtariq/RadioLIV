@@ -53,7 +53,7 @@ export default function RecentPage() {
                 {recentStations.length > 0 ? (
                     <div className="stations-grid">
                         {recentStations.map((station) => (
-                            <StationCard key={station.stationuuid} station={station} />
+                            <StationCard key={station.stationuuid} station={station} stationList={recentStations} />
                         ))}
                     </div>
                 ) : (

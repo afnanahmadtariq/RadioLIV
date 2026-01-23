@@ -7,6 +7,7 @@ import { reportClick } from '../lib/api';
 // Actions
 type PlayerAction =
     | { type: 'SET_STATION'; payload: RadioStation }
+    | { type: 'SET_STATION_LIST'; payload: RadioStation[] }
     | { type: 'PLAY' }
     | { type: 'PAUSE' }
     | { type: 'TOGGLE_PLAY' }
@@ -14,6 +15,8 @@ type PlayerAction =
     | { type: 'SET_VOLUME'; payload: number }
     | { type: 'TOGGLE_MUTE' }
     | { type: 'SET_ERROR'; payload: string | null }
+    | { type: 'SET_SLEEP_TIMER'; payload: number | null }
+    | { type: 'UPDATE_TIME_REMAINING'; payload: number }
     | { type: 'CLEAR' };
 
 // Initial state
@@ -25,6 +28,8 @@ const initialState: PlayerState = {
     isMuted: false,
     error: null,
 };
+
+const initialStationList: RadioStation[] = [];
 
 // Reducer
 function playerReducer(state: PlayerState, action: PlayerAction): PlayerState {
@@ -60,13 +65,22 @@ function playerReducer(state: PlayerState, action: PlayerAction): PlayerState {
 // Context
 interface PlayerContextType extends PlayerState {
     audioRef: React.RefObject<HTMLAudioElement | null>;
-    playStation: (station: RadioStation) => void;
+    playStation: (station: RadioStation, stationList?: RadioStation[]) => void;
     play: () => void;
     pause: () => void;
     togglePlay: () => void;
     setVolume: (volume: number) => void;
     toggleMute: () => void;
     stop: () => void;
+    nextStation: () => void;
+    previousStation: () => void;
+    hasNext: boolean;
+    hasPrevious: boolean;
+    // Sleep timer
+    sleepTimer: number | null;
+    timeRemaining: number;
+    startSleepTimer: (minutes: number) => void;
+    cancelSleepTimer: () => void;
 }
 
 const PlayerContext = createContext<PlayerContextType | null>(null);
@@ -75,6 +89,25 @@ const PlayerContext = createContext<PlayerContextType | null>(null);
 export function PlayerProvider({ children }: { children: ReactNode }) {
     const [state, dispatch] = useReducer(playerReducer, initialState);
     const audioRef = useRef<HTMLAudioElement | null>(null);
+    const [stationList, setStationList] = useReducer(
+        (_: RadioStation[], newList: RadioStation[]) => newList,
+        initialStationList
+    );
+    const currentIndex = state.currentStation
+        ? stationList.findIndex(s => s.stationuuid === state.currentStation?.stationuuid)
+        : -1;
+    const hasNext = currentIndex >= 0 && currentIndex < stationList.length - 1;
+    const hasPrevious = currentIndex > 0;
+
+    // Sleep timer state
+    const [sleepTimer, setSleepTimer] = useReducer(
+        (_: number | null, newTimer: number | null) => newTimer,
+        null
+    );
+    const [timeRemaining, setTimeRemaining] = useReducer(
+        (_: number, newTime: number) => newTime,
+        0
+    );
 
     // Initialize audio element
     useEffect(() => {
@@ -126,30 +159,15 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         }
     }, [state.volume, state.isMuted]);
 
-    // Media Session API
-    useEffect(() => {
-        if ('mediaSession' in navigator && state.currentStation) {
-            navigator.mediaSession.metadata = new MediaMetadata({
-                title: state.currentStation.name,
-                artist: state.currentStation.country,
-                artwork: state.currentStation.favicon
-                    ? [{ src: state.currentStation.favicon, sizes: '512x512', type: 'image/png' }]
-                    : [],
-            });
-
-            navigator.mediaSession.setActionHandler('play', () => {
-                audioRef.current?.play();
-            });
-            navigator.mediaSession.setActionHandler('pause', () => {
-                audioRef.current?.pause();
-            });
-        }
-    }, [state.currentStation]);
-
     // Actions
-    const playStation = useCallback((station: RadioStation) => {
+    const playStation = useCallback((station: RadioStation, newStationList?: RadioStation[]) => {
         const audio = audioRef.current;
         if (!audio) return;
+
+        // Update station list if provided
+        if (newStationList && newStationList.length > 0) {
+            setStationList(newStationList);
+        }
 
         // Report click for analytics
         reportClick(station.stationuuid);
@@ -170,6 +188,56 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         const updated = [station, ...filtered].slice(0, 20);
         localStorage.setItem('recentlyPlayed', JSON.stringify(updated));
     }, []);
+
+    const nextStation = useCallback(() => {
+        if (hasNext && stationList[currentIndex + 1]) {
+            playStation(stationList[currentIndex + 1]);
+        }
+    }, [hasNext, stationList, currentIndex, playStation]);
+
+    const previousStation = useCallback(() => {
+        if (hasPrevious && stationList[currentIndex - 1]) {
+            playStation(stationList[currentIndex - 1]);
+        }
+    }, [hasPrevious, stationList, currentIndex, playStation]);
+
+    // Sleep timer functions
+    const startSleepTimer = useCallback((minutes: number) => {
+        const endTime = Date.now() + minutes * 60 * 1000;
+        setSleepTimer(endTime);
+        setTimeRemaining(minutes * 60);
+    }, []);
+
+    const cancelSleepTimer = useCallback(() => {
+        setSleepTimer(null);
+        setTimeRemaining(0);
+    }, []);
+
+    // Media Session API
+    useEffect(() => {
+        if ('mediaSession' in navigator && state.currentStation) {
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: state.currentStation.name,
+                artist: state.currentStation.country,
+                artwork: state.currentStation.favicon
+                    ? [{ src: state.currentStation.favicon, sizes: '512x512', type: 'image/png' }]
+                    : [],
+            });
+
+            navigator.mediaSession.setActionHandler('play', () => {
+                audioRef.current?.play();
+            });
+            navigator.mediaSession.setActionHandler('pause', () => {
+                audioRef.current?.pause();
+            });
+            navigator.mediaSession.setActionHandler('nexttrack', hasNext ? () => {
+                nextStation();
+            } : null);
+            navigator.mediaSession.setActionHandler('previoustrack', hasPrevious ? () => {
+                previousStation();
+            } : null);
+        }
+    }, [state.currentStation, hasNext, hasPrevious, nextStation, previousStation]);
 
     const play = useCallback(() => {
         audioRef.current?.play().catch(() => {
@@ -205,6 +273,24 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         dispatch({ type: 'CLEAR' });
     }, []);
 
+    // Sleep timer countdown effect
+    useEffect(() => {
+        if (!sleepTimer) return;
+
+        const interval = setInterval(() => {
+            const remaining = Math.max(0, Math.floor((sleepTimer - Date.now()) / 1000));
+            setTimeRemaining(remaining);
+
+            if (remaining <= 0) {
+                audioRef.current?.pause();
+                setSleepTimer(null);
+                setTimeRemaining(0);
+            }
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [sleepTimer]);
+
     const value: PlayerContextType = {
         ...state,
         audioRef,
@@ -215,6 +301,14 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         setVolume,
         toggleMute,
         stop,
+        nextStation,
+        previousStation,
+        hasNext,
+        hasPrevious,
+        sleepTimer,
+        timeRemaining,
+        startSleepTimer,
+        cancelSleepTimer,
     };
 
     return (

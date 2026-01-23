@@ -26,7 +26,7 @@ export default async function Home() {
   return (
     <div className="animate-fade-in">
       {/* Hero Section */}
-      {featuredStation && <HeroSection station={featuredStation} />}
+      {featuredStation && <HeroSection station={featuredStation} stationList={popularStations} />}
 
       {/* Trending Stations Carousel */}
       <section style={{ marginBottom: '40px' }}>
@@ -47,7 +47,7 @@ export default async function Home() {
         </div>
         <div className="stations-carousel">
           {trendingStations.map((station) => (
-            <StationCard key={station.stationuuid} station={station} />
+            <StationCard key={station.stationuuid} station={station} stationList={trendingStations} />
           ))}
         </div>
       </section>
@@ -59,7 +59,7 @@ export default async function Home() {
           <h2 className="section-title" style={{ marginBottom: '16px' }}>⭐ Popular Stations</h2>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             {popularStations.slice(1, 6).map((station, index) => (
-              <PopularItem key={station.stationuuid} station={station} index={index} />
+              <PopularItem key={station.stationuuid} station={station} index={index} stationList={popularStations.slice(1, 6)} />
             ))}
           </div>
         </section>
@@ -98,7 +98,7 @@ export default async function Home() {
         </div>
         <div className="stations-grid">
           {popularStations.slice(6, 14).map((station) => (
-            <StationCard key={station.stationuuid} station={station} />
+            <StationCard key={station.stationuuid} station={station} stationList={popularStations.slice(6, 14)} />
           ))}
         </div>
       </section>

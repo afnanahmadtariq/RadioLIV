@@ -26,7 +26,7 @@ export default function FavoritesPage() {
                 {favorites.length > 0 ? (
                     <div className="stations-grid">
                         {favorites.map((station) => (
-                            <StationCard key={station.stationuuid} station={station} />
+                            <StationCard key={station.stationuuid} station={station} stationList={favorites} />
                         ))}
                     </div>
                 ) : (

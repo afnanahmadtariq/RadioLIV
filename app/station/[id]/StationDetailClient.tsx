@@ -218,7 +218,7 @@ export default function StationDetailClient({ station, relatedStations }: Statio
                     </div>
                     <div className="stations-grid">
                         {relatedStations.map((s) => (
-                            <StationCard key={s.stationuuid} station={s} />
+                            <StationCard key={s.stationuuid} station={s} stationList={relatedStations} />
                         ))}
                     </div>
                 </section>
