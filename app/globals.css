@@ -280,7 +280,6 @@ body {
   height: 300px;
   border-radius: var(--radius-xl);
   overflow: hidden;
-  box-shadow: var(--shadow-card);
 }
 
 .hero-image img {
