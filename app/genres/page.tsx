@@ -1,6 +1,27 @@
 import { getGenres } from '../lib/api';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import {
+    Mic2,
+    Guitar,
+    Music2,
+    Music4,
+    Zap,
+    Headphones,
+    Heart,
+    Sun,
+    CloudRain,
+    Skull,
+    Compass,
+    Flame,
+    Disc3,
+    Newspaper,
+    MessageCircle,
+    Trophy,
+    Radio,
+    TreePine,
+    LucideIcon
+} from 'lucide-react';
 
 export const metadata: Metadata = {
     title: 'Browse Radio by Genre - RadioLIV',
@@ -31,20 +52,52 @@ const genreColors: Record<string, string> = {
     folk: 'linear-gradient(135deg, #8d6e63 0%, #6d4c41 100%)',
 };
 
+// Genre icons mapping
+const genreIcons: Record<string, LucideIcon> = {
+    pop: Mic2,
+    rock: Guitar,
+    jazz: Music2,
+    classical: Music4,
+    electronic: Zap,
+    'hip hop': Headphones,
+    country: Guitar, // Acoustic usually implied
+    'r&b': Heart,
+    reggae: Sun,
+    blues: CloudRain,
+    metal: Skull,
+    indie: Compass,
+    latin: Flame,
+    dance: Disc3,
+    news: Newspaper,
+    talk: MessageCircle,
+    sports: Trophy,
+    oldies: Radio,
+    soul: Heart,
+    folk: TreePine,
+};
+
 function getGenreColor(genre: string): string {
     const lowerGenre = genre.toLowerCase();
     return genreColors[lowerGenre] || `linear-gradient(135deg, hsl(${genre.length * 30}, 60%, 45%) 0%, hsl(${genre.length * 40}, 50%, 35%) 100%)`;
+}
+
+function getGenreIcon(genre: string): LucideIcon {
+    const lowerGenre = genre.toLowerCase();
+    return genreIcons[lowerGenre] || Music2;
 }
 
 export default async function GenresPage() {
     const genres = await getGenres(100);
 
     return (
-        <div className="animate-fade-in" style={{ paddingBottom: '40px' }}>
+        <div className="animate-fade-in pb-10">
             {/* Header */}
-            <section className="hero-section" style={{ paddingBottom: '24px' }}>
-                <div className="hero-content" style={{ maxWidth: '100%' }}>
-                    <h1 className="hero-title">🎵 Browse by Genre</h1>
+            <section className="hero-section pb-6">
+                <div className="hero-content max-w-full">
+                    <h1 className="hero-title flex items-center gap-3">
+                        <Music2 className="w-8 h-8 md:w-10 md:h-10 text-[var(--accent-primary)]" />
+                        Browse by Genre
+                    </h1>
                     <p className="hero-subtitle">
                         Explore {genres.length}+ genres from around the world
                     </p>
@@ -52,25 +105,32 @@ export default async function GenresPage() {
             </section>
 
             {/* Genres Grid */}
-            <section>
-                <div className="category-grid">
-                    {genres.map((genre) => (
-                        <Link
-                            key={genre.name}
-                            href={`/genre/${encodeURIComponent(genre.name)}`}
-                            className="category-card"
-                            style={{ background: getGenreColor(genre.name) }}
-                        >
-                            <div className="category-card-content">
-                                <h3 className="category-card-name" style={{ textTransform: 'capitalize' }}>
-                                    {genre.name}
-                                </h3>
-                                <p style={{ fontSize: '12px', opacity: 0.8, margin: 0 }}>
-                                    {genre.stationcount.toLocaleString()} stations
-                                </p>
-                            </div>
-                        </Link>
-                    ))}
+            <section className="px-8">
+                <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4">
+                    {genres.map((genre) => {
+                        const Icon = getGenreIcon(genre.name);
+                        return (
+                            <Link
+                                key={genre.name}
+                                href={`/genre/${encodeURIComponent(genre.name)}`}
+                                className="relative h-[120px] rounded-[var(--radius-lg)] overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-[var(--shadow-card)] group"
+                                style={{ background: getGenreColor(genre.name) }}
+                            >
+                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-20 text-white transform transition-transform duration-300 group-hover:scale-125 group-hover:rotate-12 pointer-events-none">
+                                    <Icon size={80} strokeWidth={1} />
+                                </div>
+                                <div className="relative z-[2] h-full flex flex-col justify-end p-4 bg-gradient-to-t from-black/60 to-transparent">
+                                    <h3 className="text-lg font-semibold m-0 capitalize text-white shadow-black drop-shadow-md flex items-center gap-2">
+                                        <Icon size={20} className="stroke-[2.5]" />
+                                        {genre.name}
+                                    </h3>
+                                    <p className="text-xs text-white/90 m-0 font-medium">
+                                        {genre.stationcount.toLocaleString()} stations
+                                    </p>
+                                </div>
+                            </Link>
+                        );
+                    })}
                 </div>
             </section>
         </div>
