@@ -1,5 +1,6 @@
 import { getPopularStations, getTrendingStations, getGenres } from './lib/api';
 import { StationCard, PopularItem, GenreTag, HeroSection } from './components';
+import TrendingCarousel from './components/TrendingCarousel';
 import Link from 'next/link';
 
 // Featured genres with colors
@@ -29,28 +30,7 @@ export default async function Home() {
       {featuredStation && <HeroSection station={featuredStation} stationList={popularStations} />}
 
       {/* Trending Stations Carousel */}
-      <section style={{ marginBottom: '40px' }}>
-        <div className="section-header">
-          <h2 className="section-title">🔥 Trending Now</h2>
-          <div className="section-nav">
-            <Link href="/radio" className="btn btn-icon">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
-              </svg>
-            </Link>
-            <Link href="/radio" className="btn btn-icon">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
-              </svg>
-            </Link>
-          </div>
-        </div>
-        <div className="stations-carousel">
-          {trendingStations.map((station) => (
-            <StationCard key={station.stationuuid} station={station} stationList={trendingStations} />
-          ))}
-        </div>
-      </section>
+      <TrendingCarousel stations={trendingStations} />
 
       {/* Two Column Layout */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px', padding: '0 32px', marginBottom: '40px' }}>
