@@ -46,7 +46,7 @@ export default function TopBar() {
                 </div> */}
             </header>
             {/* Spacer to prevent content overlap */}
-            <div className="h-18" />
+            <div className="h-20" />
         </>
     );
 }

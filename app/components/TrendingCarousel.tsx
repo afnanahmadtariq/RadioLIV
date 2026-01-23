@@ -2,10 +2,10 @@
 
 import { useState, useRef } from 'react';
 import { StationCard } from './';
-import { Station } from '../types';
+import { RadioStation } from '../types';
 
 interface TrendingCarouselProps {
-  stations: Station[];
+  stations: RadioStation[];
 }
 
 export default function TrendingCarousel({ stations }: TrendingCarouselProps) {
