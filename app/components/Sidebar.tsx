@@ -69,9 +69,9 @@ export default function Sidebar() {
 
     return (
         <aside className="sidebar">
-            <div className="user-profile">
-                <div className="user-avatar">📻</div>
-                <div className="user-info">
+            <div className="sidebar-header">
+                <div className="brand-logo">📻</div>
+                <div className="brand-details">
                     <h3>RadioLIV</h3>
                     <span>Online Radio</span>
                 </div>
