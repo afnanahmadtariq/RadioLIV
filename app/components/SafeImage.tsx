@@ -24,8 +24,11 @@ export default function SafeImage({
 }: SafeImageProps) {
     const [hasError, setHasError] = useState(false);
 
-    // Trim the URL to avoid issues with trailing spaces
-    const cleanSrc = src?.trim() || '';
+    // Trim the URL and upgrade http to https to avoid mixed content warnings
+    let cleanSrc = src?.trim() || '';
+    if (cleanSrc.startsWith('http://')) {
+        cleanSrc = cleanSrc.replace('http://', 'https://');
+    }
 
     if (hasError || !cleanSrc) {
         return fallback ? <>{fallback}</> : null;

@@ -14,8 +14,11 @@ export default function PopularItem({ station, index, stationList }: PopularItem
     const { playStation, currentStation, isPlaying } = usePlayer();
     const isCurrentStation = currentStation?.stationuuid === station.stationuuid;
 
-    // Trim favicon URL to avoid issues with trailing spaces
-    const faviconUrl = station.favicon?.trim() || '';
+    // Trim favicon URL and upgrade http to https to avoid mixed content warnings
+    let faviconUrl = station.favicon?.trim() || '';
+    if (faviconUrl.startsWith('http://')) {
+        faviconUrl = faviconUrl.replace('http://', 'https://');
+    }
 
     return (
         <div
@@ -35,8 +38,8 @@ export default function PopularItem({ station, index, stationList }: PopularItem
                         height={48}
                         unoptimized
                         style={{ objectFit: 'cover', width: '100%', height: '100%' }}
-                        onError={(e) => {
-                            (e.target as HTMLImageElement).style.display = 'none';
+                        onError={(e: any) => {
+                            if (e.target) (e.target as HTMLImageElement).style.display = 'none';
                         }}
                     />
                 ) : (

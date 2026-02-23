@@ -19,8 +19,11 @@ export default function StationCard({ station, stationList }: StationCardProps) 
     const { playStation, currentStation, isPlaying } = usePlayer();
     const isCurrentStation = currentStation?.stationuuid === station.stationuuid;
 
-    // Trim favicon URL to avoid issues with trailing spaces
-    const faviconUrl = station.favicon?.trim() || '';
+    // Trim favicon URL and upgrade http to https to avoid mixed content warnings
+    let faviconUrl = station.favicon?.trim() || '';
+    if (faviconUrl.startsWith('http://')) {
+        faviconUrl = faviconUrl.replace('http://', 'https://');
+    }
 
     const handlePlay = () => {
         playStation(station, stationList);
@@ -40,8 +43,8 @@ export default function StationCard({ station, stationList }: StationCardProps) 
                         height={160}
                         unoptimized
                         className="object-cover w-full h-full"
-                        onError={(e) => {
-                            (e.target as HTMLImageElement).style.display = 'none';
+                        onError={(e: any) => {
+                            if (e.target) (e.target as HTMLImageElement).style.display = 'none';
                         }}
                     />
                 ) : (

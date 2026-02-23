@@ -23,7 +23,7 @@ self.addEventListener('notificationclick', function (event) {
     );
 });
 
-const CACHE_NAME = 'radioliv-static-v1';
+const CACHE_NAME = 'radioliv-static-v2';
 
 self.addEventListener('install', (event) => {
     event.waitUntil(
@@ -59,15 +59,38 @@ self.addEventListener('fetch', (event) => {
     // Only cache GET requests
     if (event.request.method !== 'GET') return;
 
-    // Don't cache API calls to external radio services heavily, or handle them differently
-    // For now, simple network-first strategy for pages, cache-first for static assets
+    const url = new URL(event.request.url);
 
+    // Cache-first for Next.js static assets since they are immutable (hashed)
+    if (
+        url.pathname.startsWith('/_next/static/') ||
+        url.pathname.startsWith('/_next/image/') ||
+        url.pathname.match(/\.(png|jpg|jpeg|gif|svg|ico)$/)
+    ) {
+        event.respondWith(
+            caches.match(event.request).then((response) => {
+                if (response) {
+                    return response;
+                }
+                return fetch(event.request).then((networkResponse) => {
+                    if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
+                        const responseToCache = networkResponse.clone();
+                        caches.open(CACHE_NAME).then((cache) => {
+                            cache.put(event.request, responseToCache);
+                        });
+                    }
+                    return networkResponse;
+                });
+            })
+        );
+        return;
+    }
+
+    // Network-first for everything else (HTML, API, RSC payloads)
+    // This ensures we don't serve stale deployment chunks or break Next.js router
     event.respondWith(
-        caches.match(event.request).then((response) => {
-            if (response) {
-                return response;
-            }
-            return fetch(event.request).then((response) => {
+        fetch(event.request)
+            .then((response) => {
                 // Check if we received a valid response
                 if (!response || response.status !== 200 || response.type !== 'basic') {
                     return response;
@@ -81,12 +104,18 @@ self.addEventListener('fetch', (event) => {
                 });
 
                 return response;
-            }).catch(() => {
-                // Fallback for document requests
-                if (event.request.mode === 'navigate') {
-                    return caches.match('/');
-                }
-            });
-        })
+            })
+            .catch(() => {
+                // Fallback to cache on network failure
+                return caches.match(event.request).then((response) => {
+                    if (response) {
+                        return response;
+                    }
+                    // Fallback for document requests
+                    if (event.request.mode === 'navigate') {
+                        return caches.match('/');
+                    }
+                });
+            })
     );
 });

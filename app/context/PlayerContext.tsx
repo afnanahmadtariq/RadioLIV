@@ -220,7 +220,13 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
                 title: state.currentStation.name,
                 artist: state.currentStation.country,
                 artwork: state.currentStation.favicon
-                    ? [{ src: state.currentStation.favicon, sizes: '512x512', type: 'image/png' }]
+                    ? [{
+                        src: state.currentStation.favicon.startsWith('http://')
+                            ? state.currentStation.favicon.replace('http://', 'https://')
+                            : state.currentStation.favicon,
+                        sizes: '512x512',
+                        type: 'image/png'
+                    }]
                     : [],
             });
 

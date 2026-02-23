@@ -167,8 +167,11 @@ export default function PlayerBar() {
         );
     }
 
-    // Trim favicon URL to avoid issues with trailing spaces
-    const faviconUrl = currentStation.favicon?.trim() || '';
+    // Trim favicon URL and upgrade http to https to avoid mixed content warnings
+    let faviconUrl = currentStation.favicon?.trim() || '';
+    if (faviconUrl.startsWith('http://')) {
+        faviconUrl = faviconUrl.replace('http://', 'https://');
+    }
 
     return (
         <div className="player-bar">
@@ -182,8 +185,8 @@ export default function PlayerBar() {
                             width={56}
                             height={56}
                             unoptimized
-                            onError={(e) => {
-                                (e.target as HTMLImageElement).style.display = 'none';
+                            onError={(e: any) => {
+                                if (e.target) (e.target as HTMLImageElement).style.display = 'none';
                             }}
                         />
                     ) : (
