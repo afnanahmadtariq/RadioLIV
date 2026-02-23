@@ -52,6 +52,39 @@ const HeartIcon = ({ filled = false }: { filled?: boolean }) => (
     </svg>
 );
 
+const ScrollingText = ({ children, className = '' }: { children: React.ReactNode, className?: string }) => {
+    const containerRef = React.useRef<HTMLDivElement>(null);
+    const textRef = React.useRef<HTMLDivElement>(null);
+    const [isOverflowing, setIsOverflowing] = React.useState(false);
+
+    React.useEffect(() => {
+        const checkOverflow = () => {
+            if (containerRef.current && textRef.current) {
+                setIsOverflowing(textRef.current.scrollWidth > containerRef.current.clientWidth);
+            }
+        };
+
+        checkOverflow();
+        window.addEventListener('resize', checkOverflow);
+        return () => window.removeEventListener('resize', checkOverflow);
+    }, [children]);
+
+    return (
+        <div ref={containerRef} style={{ overflow: 'hidden', width: '100%' }}>
+            <div
+                ref={textRef}
+                className={isOverflowing ? `player-station-info-scroll ${className}` : ''}
+                style={{
+                    whiteSpace: 'nowrap',
+                    display: 'inline-block'
+                }}
+            >
+                {children}
+            </div>
+        </div>
+    );
+};
+
 export default function PlayerBar() {
     const {
         currentStation,
@@ -160,21 +193,27 @@ export default function PlayerBar() {
                     )}
                 </div>
                 <div className="player-station-info">
-                    <h4>{currentStation.name}</h4>
-                    <p>{currentStation.country} • {currentStation.tags?.split(',')[0] || 'Radio'}</p>
+                    <ScrollingText>
+                        <h4>{currentStation.name}</h4>
+                    </ScrollingText>
+                    <ScrollingText className="secondary">
+                        <p>{currentStation.country} • {currentStation.tags?.split(',')[0] || 'Radio'} • {currentStation.bitrate || 128}kbps</p>
+                    </ScrollingText>
                 </div>
-                <button
-                    className={`player-favorite ${isStationFavorite ? 'active' : ''}`}
-                    onClick={() => toggleFavorite(currentStation)}
-                >
-                    <HeartIcon filled={isStationFavorite} />
-                </button>
+                <div className="player-mobile-favorite">
+                    <button
+                        className={`player-favorite ${isStationFavorite ? 'active' : ''}`}
+                        onClick={() => toggleFavorite(currentStation)}
+                    >
+                        <HeartIcon filled={isStationFavorite} />
+                    </button>
+                </div>
             </div>
 
             {/* Controls */}
             <div className="player-controls">
                 <div className="player-buttons">
-                    <button 
+                    <button
                         className="player-btn"
                         onClick={previousStation}
                         disabled={!hasPrevious}
@@ -195,7 +234,7 @@ export default function PlayerBar() {
                             <PlayIcon />
                         )}
                     </button>
-                    <button 
+                    <button
                         className="player-btn"
                         onClick={nextStation}
                         disabled={!hasNext}
@@ -223,7 +262,7 @@ export default function PlayerBar() {
             {/* Volume */}
             <div className="player-volume">
                 <div className="relative">
-                    <button 
+                    <button
                         className={`player-btn ${sleepTimer ? 'text-[var(--accent-primary)]' : ''}`}
                         onClick={() => setShowSleepMenu(!showSleepMenu)}
                         title={sleepTimer ? `Sleep timer: ${formatTime(timeRemaining)}` : 'Set sleep timer'}
@@ -274,7 +313,7 @@ export default function PlayerBar() {
                         </div>
                     )}
                 </div>
-                <button className="player-btn" onClick={toggleMute}>
+                <button className="player-btn volume-btn" onClick={toggleMute}>
                     <VolumeIcon muted={isMuted} />
                 </button>
                 <div

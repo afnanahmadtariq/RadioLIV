@@ -906,12 +906,93 @@ body {
   }
 
   .player-bar {
-    grid-template-columns: 1fr auto;
-    padding: 0 16px;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    padding: 8px 16px;
+    height: auto;
+    gap: 8px;
+    box-sizing: border-box;
+  }
+
+  :root {
+    --player-height: auto;
+  }
+
+  .player-station {
+    grid-row: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 4px;
+    gap: 4px;
+  }
+
+  /* Make image smaller to save space and align appropriately */
+  .player-station-image {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+  }
+
+  /* Animate sliding text container */
+  .player-station-info {
+    flex: 1;
+    min-width: 0;
+    max-width: 60vw;
+    overflow: hidden;
+    position: relative;
+    padding: 0 8px;
+  }
+
+  .player-station-info-scroll {
+    white-space: nowrap;
+    animation: scroll-text 10s linear infinite;
+    display: inline-block;
+  }
+
+  /* Stop scrolling if it's short, optional but requires JS, we'll just scroll all text */
+  @keyframes scroll-text {
+    0% {
+      transform: translateX(0);
+    }
+
+    10% {
+      transform: translateX(0);
+    }
+
+    90% {
+      transform: translateX(-100%);
+    }
+
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+
+  .player-station-info p {
+    font-size: 11px;
+    white-space: nowrap;
+    display: inline-block;
+  }
+
+  .player-station-info-scroll.secondary {
+    animation-duration: 15s;
+    opacity: 0.8;
+  }
+
+  .player-mobile-favorite {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
   }
 
   .player-controls {
-    gap: 4px;
+    grid-row: 2;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    gap: 16px;
   }
 
   .player-progress {
@@ -922,9 +1003,8 @@ body {
     display: none;
   }
 
-  .player-station-image {
-    width: 44px;
-    height: 44px;
+  .volume-btn {
+    display: none;
   }
 
   .mobile-bottom-nav {
