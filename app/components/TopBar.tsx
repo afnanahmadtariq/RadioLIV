@@ -22,8 +22,8 @@ export default function TopBar() {
 
     return (
         <>
-            <header className="fixed top-0 right-0 z-20 flex items-center justify-between px-8 py-4 bg-transparent backdrop-blur-md left-[var(--sidebar-width)] border-b border-(--border-color)">
-                <form onSubmit={handleSearch} className="flex items-center gap-3 bg-(--bg-card) border border-(--border-color) rounded-full px-5 py-2.5 w-[320px] transition-all duration-150 focus-within:border-[var(--accent-primary)] focus-within:bg-[var(--bg-card-hover)]">
+            <header className="fixed top-0 right-0 z-20 flex items-center justify-between px-4 md:px-8 py-3 md:py-4 bg-[var(--bg-primary)]/80 backdrop-blur-md left-[var(--sidebar-width)] border-b border-(--border-color)">
+                <form onSubmit={handleSearch} className="flex items-center gap-3 bg-(--bg-card) border border-(--border-color) rounded-full px-4 md:px-5 py-2 md:py-2.5 w-full max-w-full sm:max-w-[320px] transition-all duration-150 focus-within:border-[var(--accent-primary)] focus-within:bg-[var(--bg-card-hover)]">
                     <div className="w-4.5 h-4.5 text-(--text-muted) shrink-0">
                         <SearchIcon />
                     </div>

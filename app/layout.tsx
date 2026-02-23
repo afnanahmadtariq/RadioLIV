@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { PlayerProvider } from "./context/PlayerContext";
 import { FavoritesProvider } from "./context/FavoritesContext";
-import { Sidebar, TopBar, PlayerBar, PwaRegistrar } from "./components";
+import { Sidebar, TopBar, PlayerBar, PwaRegistrar, MobileNav } from "./components";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -51,6 +51,7 @@ export default function RootLayout({
                 {children}
               </main>
               <PlayerBar />
+              <MobileNav />
             </div>
             <PwaRegistrar />
           </FavoritesProvider>

@@ -27,8 +27,8 @@ export default async function GenresPage() {
             </section>
 
             {/* Genres Grid */}
-            <section className="px-8">
-                <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4">
+            <section className="px-4 md:px-8">
+                <div className="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4">
                     {genres.map((genre) => (
                         <GenreCard
                             key={genre.name}

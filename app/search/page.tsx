@@ -52,7 +52,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
                             <div className="empty-state-icon">🔍</div>
                             <h3>No stations found</h3>
                             <p>Try a different search term or browse by genre or country.</p>
-                            <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>
+                            <div className="flex flex-wrap gap-3 mt-4 justify-center">
                                 <Link href="/genres" className="btn btn-primary">
                                     Browse Genres
                                 </Link>

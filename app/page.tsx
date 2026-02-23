@@ -33,11 +33,11 @@ export default async function Home() {
       <TrendingCarousel stations={trendingStations} />
 
       {/* Two Column Layout */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px', padding: '0 32px', marginBottom: '40px' }}>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 px-4 md:px-8 mb-10">
         {/* Popular Stations */}
         <section>
-          <h2 className="section-title" style={{ marginBottom: '16px' }}>⭐ Popular Stations</h2>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <h2 className="section-title mb-4">⭐ Popular Stations</h2>
+          <div className="flex flex-col">
             {popularStations.slice(1, 6).map((station, index) => (
               <PopularItem key={station.stationuuid} station={station} index={index} stationList={popularStations.slice(1, 6)} />
             ))}
@@ -46,12 +46,8 @@ export default async function Home() {
 
         {/* Genre Categories */}
         <section>
-          <h2 className="section-title" style={{ marginBottom: '16px' }}>🎵 Browse by Genre</h2>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: '12px'
-          }}>
+          <h2 className="section-title mb-4">🎵 Browse by Genre</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {featuredGenres.map((genre) => (
               <GenreCard
                 key={genre.name}
@@ -64,10 +60,10 @@ export default async function Home() {
       </div>
 
       {/* More Stations Grid */}
-      <section style={{ marginBottom: '40px' }}>
+      <section className="mb-10">
         <div className="section-header">
           <h2 className="section-title">🎧 More Stations</h2>
-          <Link href="/radio" className="btn btn-secondary" style={{ padding: '8px 16px', fontSize: '13px' }}>
+          <Link href="/radio" className="btn btn-secondary py-2 px-4 text-sm">
             View All
           </Link>
         </div>
@@ -79,9 +75,9 @@ export default async function Home() {
       </section>
 
       {/* Top Genres Tags */}
-      <section style={{ padding: '0 32px', marginBottom: '60px' }}>
-        <h2 className="section-title" style={{ marginBottom: '16px' }}>🏷️ Popular Tags</h2>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+      <section className="px-4 md:px-8 mb-15">
+        <h2 className="section-title mb-4">🏷️ Popular Tags</h2>
+        <div className="flex flex-wrap gap-2">
           {genres.slice(0, 20).map((genre) => (
             <GenreTag key={genre.name} name={genre.name} count={genre.stationcount} />
           ))}

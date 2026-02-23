@@ -4,10 +4,10 @@ import { useState } from 'react';
 import { usePlayer } from '../context/PlayerContext';
 
 export default function SettingsPage() {
-    const { 
-        volume, 
-        setVolume, 
-        isMuted, 
+    const {
+        volume,
+        setVolume,
+        isMuted,
         toggleMute,
         sleepTimer,
         timeRemaining,
@@ -58,7 +58,7 @@ export default function SettingsPage() {
             </section>
 
             {/* Settings Sections */}
-            <div style={{ padding: '0 32px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            <div className="px-4 md:px-8 flex flex-col gap-6">
 
                 {/* Sleep Timer */}
                 <section style={{
@@ -108,7 +108,7 @@ export default function SettingsPage() {
                                 ))}
                             </div>
 
-                            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                            <div className="flex flex-wrap gap-2 items-center">
                                 <input
                                     type="number"
                                     placeholder="Custom minutes"
@@ -162,7 +162,7 @@ export default function SettingsPage() {
                                     max="100"
                                     value={isMuted ? 0 : Math.round(volume * 100)}
                                     onChange={(e) => setVolume(parseInt(e.target.value) / 100)}
-                                    style={{ width: '200px' }}
+                                    className="w-[100px] sm:w-[200px]"
                                 />
                                 <span style={{ fontSize: '14px', color: 'var(--text-muted)', minWidth: '40px' }}>
                                     {isMuted ? '0' : Math.round(volume * 100)}%
@@ -214,7 +214,7 @@ export default function SettingsPage() {
                         Manage your local data
                     </p>
 
-                    <div style={{ display: 'flex', gap: '12px' }}>
+                    <div className="flex flex-wrap gap-3">
                         <button
                             className="btn btn-secondary"
                             onClick={() => {

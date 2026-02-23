@@ -28,12 +28,8 @@ export default async function CountriesPage() {
             </section>
 
             {/* Countries Grid */}
-            <section style={{ padding: '0 32px' }}>
-                <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-                    gap: '12px'
-                }}>
+            <section className="px-4 md:px-8">
+                <div className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-3">
                     {filteredCountries.map((country) => (
                         <CountryCard
                             key={country.iso_3166_1}

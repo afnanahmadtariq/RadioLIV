@@ -28,7 +28,7 @@ export default function HeroSection({ station, stationList }: HeroSectionProps) 
                 <p className="hero-subtitle">
                     {station.country} • {station.tags?.split(',').slice(0, 2).join(', ') || 'Radio'} • {station.bitrate || '128'} kbps
                 </p>
-                <div className="hero-actions">
+                <div className="flex flex-wrap gap-3 mt-4">
                     <button
                         className="btn btn-primary"
                         onClick={() => playStation(station, stationList)}

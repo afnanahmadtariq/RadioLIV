@@ -54,9 +54,9 @@ export default function StationDetailClient({ station, relatedStations }: Statio
                     Back to Home
                 </Link>
 
-                <div className="flex gap-8 items-start">
+                <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-center md:items-start text-center md:text-left">
                     {/* Station Image */}
-                    <div className="w-[200px] h-[200px] rounded-[var(--radius-xl)] overflow-hidden bg-[var(--bg-secondary)] flex-shrink-0 shadow-[var(--shadow-card)]">
+                    <div className="w-[160px] h-[160px] md:w-[200px] md:h-[200px] rounded-[var(--radius-xl)] overflow-hidden bg-[var(--bg-secondary)] flex-shrink-0 shadow-[var(--shadow-card)]">
                         {station.favicon ? (
                             <SafeImage
                                 src={station.favicon}
@@ -107,7 +107,7 @@ export default function StationDetailClient({ station, relatedStations }: Statio
                         </p>
 
                         {/* Action Buttons */}
-                        <div className="flex gap-3 mb-6">
+                        <div className="flex flex-wrap justify-center md:justify-start gap-3 mb-6">
                             <button
                                 className="btn btn-primary min-w-[140px]"
                             >
@@ -150,7 +150,7 @@ export default function StationDetailClient({ station, relatedStations }: Statio
 
                         {/* Tags */}
                         {tags.length > 0 && (
-                            <div className="flex flex-wrap gap-2">
+                            <div className="flex flex-wrap justify-center md:justify-start gap-2">
                                 {tags.slice(0, 8).map((tag) => (
                                     <Link
                                         key={tag}
@@ -167,7 +167,7 @@ export default function StationDetailClient({ station, relatedStations }: Statio
             </section>
 
             {/* Station Details */}
-            <section className="px-8 py-0 mb-5">
+            <section className="px-4 md:px-8 py-0 mb-5">
                 <h2 className="section-title mb-5">📋 Station Details</h2>
                 <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4 bg-[var(--bg-card)] p-6 rounded-[var(--radius-lg)] border border-[var(--border-color)]">
                     <div>

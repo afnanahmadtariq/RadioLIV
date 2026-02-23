@@ -64,16 +64,12 @@ html {
 body {
   background: var(--bg-primary);
   background-image:
-    radial-gradient(
-      ellipse at top left,
+    radial-gradient(ellipse at top left,
       rgba(233, 30, 99, 0.15) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      ellipse at bottom right,
+      transparent 50%),
+    radial-gradient(ellipse at bottom right,
       rgba(156, 39, 176, 0.1) 0%,
-      transparent 50%
-    );
+      transparent 50%);
   color: var(--text-primary);
   font-family:
     "Inter",
@@ -754,10 +750,12 @@ body {
 
 /* ===== Animations ===== */
 @keyframes pulse {
+
   0%,
   100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.5;
   }
@@ -768,6 +766,7 @@ body {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -778,6 +777,7 @@ body {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -846,6 +846,10 @@ body {
   font-size: 14px;
   color: var(--text-muted);
   margin: 0;
+}
+
+.mobile-bottom-nav {
+  display: none;
 }
 
 /* ===== Responsive Design ===== */
@@ -921,5 +925,56 @@ body {
   .player-station-image {
     width: 44px;
     height: 44px;
+  }
+
+  .mobile-bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: var(--bg-player);
+    border-top: 1px solid var(--border-color);
+    z-index: 1000;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 8px;
+  }
+
+  .mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    flex: 1;
+    height: 100%;
+    transition: color var(--transition-fast);
+  }
+
+  .mobile-nav-item svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .mobile-nav-item span {
+    font-size: 10px;
+    font-weight: 500;
+  }
+
+  .mobile-nav-item.active {
+    color: var(--accent-primary);
+  }
+
+  .player-bar {
+    bottom: 60px;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .main-content {
+    padding-bottom: calc(var(--player-height) + 60px);
   }
 }

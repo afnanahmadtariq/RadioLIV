@@ -9,3 +9,4 @@ export { default as GenreCard } from './GenreCard';
 export { default as HeroSection } from './HeroSection';
 export { default as CountryCard } from './CountryCard';
 export { default as PwaRegistrar } from './PwaRegistrar';
+export { default as MobileNav } from './MobileNav';
